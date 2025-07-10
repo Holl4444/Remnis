@@ -14,11 +14,15 @@ export default function Error({ error, reset }: ErrorProps) {
   }, [error]);
 
   return (
-    <section className={styles.errorWrap}>
-      <h1 className={styles.errorHero}>
-        Sorry, something went wrong
-      </h1>
-          <button className={styles.button} onClick={reset}>Reload Remnis</button>
-    </section>
+    <div className={styles.backdrop}>
+      <section className={styles.errorWrap}>
+        <h1 className={styles.errorHero}>
+          Sorry, something went wrong
+        </h1>
+        <button className={styles.button} onClick={reset}>
+          Reload Remnis
+        </button>
+      </section>
+    </div>
   );
 }

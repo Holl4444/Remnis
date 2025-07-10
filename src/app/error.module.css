@@ -1,51 +1,65 @@
+.backdrop {
+  background-color: aliceblue;
+  background-image: url('https://images.unsplash.com/photo-1496450681664-3df85efbd29f?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+  background-size: cover;
+  background-position: bottom;
+}
+
 .errorWrap {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    width: 80%;
-    margin: 0 auto;
-    backdrop-filter: blur(10px);
-  }
-  
-  .errorHero {
-    text-align: center;
-    font-family: 'Cabin Sketch', Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 2.5rem;
-    margin: 2em 0;
-    text-shadow: 1px 1px 1px rgb(226, 92, 75), 2px 2px 1px #fff;
-    }
-  
-  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 60%;
+  padding: 1em;
+  margin: 0 auto;
+  backdrop-filter: blur(20px);
+}
+
+.errorHero {
+  text-align: center;
+  font-family: 'Cabin Sketch', Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 2.5rem;
+  margin: 2em 0;
+  text-shadow: 1px 1px 1px rgb(226, 92, 75), 2px 2px 1px #fff, 1px 3px 1px #000;
+  filter: drop-shadow(2px 3px 4px #666284)
+}
+
+.button {
+  font-family: 'Cabin Sketch', Verdana, Geneva, Tahoma, sans-serif;
+  width: 100%;
+  border: 2px solid #828a95;
+  border-radius: 0.312em;
+  font-size: 1.05rem;
+  padding: 0.75em;
+  background-color: #191944;
+  color: #fff;
+  box-shadow: #ba9890 0 0 3px , 1px 2px 10px #957b85,
+    1px 2px 26px #ba7f7d;
+  transition: all 60ms ease-out;
+}
+
+.button:hover,
+.button:focus {
+  background-color: #f5bd8a;
+  color: #111125;
+  border: 2px solid #111125;
+  box-shadow: inset 0 0 3px #c07b3b, inset 0 0 2px #c07b3b,
+    #ba9890 0 0 6px , 1px 2px 8px #957b85,
+    1px 2px 26px #ba7f7d;
+}
+
+.button:active {
+  box-shadow: 0 1px 2px #6a7c92;
+  transform: translateY(0.08rem);
+}
+
+@media (min-width: 1024px) {
   .button {
-    font-family: 'Cabin Sketch', Verdana, Geneva, Tahoma, sans-serif;
-    width: 100%;
-    background-color: #191944;
-    color: #fff;
-    box-shadow: 1px 2px 2px #6a7c92, 1px 2px 3px #bdcada,
-      1px 2px 4px #d1dae6;
-    transition: all 60ms ease-out;
+    margin: 0 auto;
+    padding: 1em 2em;
+    width: 30%;
+    max-width: 200px;
   }
-  
-  .button:hover,
-  .button:focus {
-    background-color: #f5bd8a;
-    color: #111125;
-    border: 2px solid #111125;
-    box-shadow: inset 0 0 3px #c07b3b, inset 0 0 2px #c07b3b,
-      1px 2px 2px #6a7c92, 1px 2px 3px #bdcada, 1px 2px 4px #d1dae6;
-  }
-  
-  .button:active {
-    box-shadow: 0 1px 2px #6a7c92;
-    transform: translateY(0.08rem);
-  }
-  
-  @media (min-width: 1024px) {
-    .button {
-      margin: 0 auto;
-      padding: 1em 2em;
-      width: 30%;
-    }
-  }
+}
