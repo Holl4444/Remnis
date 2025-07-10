@@ -1,0 +1,188 @@
+.memForm {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+}
+
+.label {
+  font-size: 1.2rem;
+  margin-bottom: 0.75em;
+}
+
+.input,
+.textarea,
+.button {
+  width: 100%;
+  border: 2px solid #828a95;
+  border-radius: 0.312em;
+  margin-bottom: 0.75em;
+  font-family: 'Nunito';
+  font-size: 1.05rem;
+}
+
+.textarea,
+.button {
+  padding: 0.75em;
+}
+
+.input:hover,
+.textarea:hover {
+  background-color: #ecf0f7;
+  border: 2px solid #fff;
+  box-shadow: inset 0 0 5px #828a95, 1px 2px 2px #6a7c92,
+    1px 2px 3px #bdcada, 1px 2px 4px #d1dae6;
+}
+
+.input:focus,
+.textarea:focus {
+  background-color: #f7eeec;
+  border: 2px solid #e7b3ad;
+  outline: none;
+  box-shadow: inset 0 0 3px #da9181, 1px 2px 2px #6a7c92,
+    1px 2px 3px #bdcada;
+}
+
+.input {
+  padding: 0.5em;
+  box-shadow: 1px 2px 2px #6a7c92, 1px 2px 3px #bdcada,
+    1px 2px 4px #d1dae6;
+}
+
+.textarea {
+  height: 20vh;
+  min-height: 20vh;
+  min-width: 100%;
+  max-width: 100%;
+  padding: 1em;
+  margin-bottom: 0;
+  margin-top: 0;
+  box-shadow: 2px 3px 3px #6a7c92, 2px 3px 4px #bdcada,
+    2px 3px 5px #d1dae6;
+}
+
+.button {
+  font-family: 'Cabin Sketch', Verdana, Geneva, Tahoma, sans-serif;
+  width: 100%;
+  background-color: #191944;
+  color: #fff;
+  box-shadow: 1px 2px 2px #6a7c92, 1px 2px 3px #bdcada,
+    1px 2px 4px #d1dae6;
+  transition: all 60ms ease-out;
+}
+
+.button:hover,
+.button:focus {
+  background-color: #f5bd8a;
+  color: #111125;
+  border: 2px solid #111125;
+  box-shadow: inset 0 0 3px #c07b3b, inset 0 0 2px #c07b3b,
+    1px 2px 2px #6a7c92, 1px 2px 3px #bdcada, 1px 2px 4px #d1dae6;
+}
+
+.button:active {
+  box-shadow: 0 1px 2px #6a7c92;
+  transform: translateY(0.08rem);
+}
+
+.recordControls {
+  margin: 0.5em 0;
+}
+
+.recordBtn {
+  background-color: #e47b6f;
+  color: #191944;
+}
+
+.icon {
+  margin-left: 0.5em;
+}
+
+.submitWrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.submitMsg {
+  height: 1.5em;
+  margin-top: 0.2em;
+  padding: 1em auto;
+  opacity: 1;
+  transition: opacity 0.7s ease-in-out;
+}
+
+.hidden {
+  opacity: 0;
+  transition: opacity 0.7s ease-in-out;
+}
+
+@media (min-width: 768px) {
+  .recordControls {
+    display: flex;
+    justify-content: center;
+    gap: 0.5em;
+  }
+}
+
+@media (min-width: 1024px) {
+  .memFormInputs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    row-gap: 1em;
+  }
+  .memFormInput {
+    width: 60%;
+    display: flex;
+    align-items: center;
+  }
+
+  .label {
+    width: 20%;
+    /* Centers the inputs */
+    margin-left: -20%;
+  }
+
+  .input {
+    padding: 0.75em;
+  }
+
+  .textarea,
+  .button {
+    padding: 1.5em;
+  }
+
+  .textarea {
+    min-height: 35vh;
+    margin-bottom: 0.5em;
+    margin-top: 1em;
+  }
+
+  .button {
+    width: 30%;
+  }
+
+ .recordControls {
+  gap: 1.2em;
+ }
+
+  .recordBtn {
+    margin: 1em 0;
+    width: 30%;
+  }
+
+  .recordBtn:hover {
+    background-color: #e24837;
+  }
+
+  .stopBtn {
+    margin: 1em 0;
+    width: 30%;
+  }
+}
+
+@media (min-width: 1440px) {
+
+}
