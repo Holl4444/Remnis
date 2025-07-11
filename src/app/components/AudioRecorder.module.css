@@ -1,0 +1,40 @@
+.recordControls {
+  margin: 0.5em 0;
+}
+
+.recordControls .recordBtn {
+  background-color: #e47b6f;
+  color: #191944;
+}
+
+.icon {
+  margin-left: 0.5em;
+}
+
+@media (min-width: 768px) {
+  .recordControls {
+    display: flex;
+    justify-content: center;
+    gap: 0.5em;
+  }
+}
+
+@media (min-width: 1024px) {
+  .recordControls {
+    gap: 1.2em;
+  }
+
+  .recordControls .recordBtn {
+    margin: 1em 0;
+    width: 30%;
+  }
+
+  .recordControls .recordBtn:hover {
+    background-color: #e24837;
+  }
+
+  .recordControls .stopBtn {
+    margin: 1em 0;
+    width: 30%;
+  }
+}

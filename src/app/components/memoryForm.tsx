@@ -1,11 +1,8 @@
 'use client';
 import { useActionState, useState, useEffect } from 'react';
 import { useScrollHeight } from '../hooks/useScrollHeight';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faMicrophoneLines,
-  faMicrophoneLinesSlash,
-} from '@fortawesome/free-solid-svg-icons';
+import AudioRecorder from './AudioRecorder';
+
 import styles from './memoryForm.module.css';
 
 interface Memory {
@@ -90,20 +87,7 @@ export default function MemForm() {
           />
         </div>
       </section>
-      <div className={styles.recordControls}>
-        <button className={`${styles.button} ${styles.recordBtn}`}>
-          Record
-          <span className={styles.icon}>
-            <FontAwesomeIcon icon={faMicrophoneLines} />
-          </span>
-        </button>
-        <button className={`${styles.button} ${styles.stopBtn} `}>
-          Stop
-          <span className={styles.icon}>
-            <FontAwesomeIcon icon={faMicrophoneLinesSlash} />
-          </span>
-        </button>
-      </div>
+      <AudioRecorder/>
       <textarea
         className={styles.textarea}
         id="text-area"
