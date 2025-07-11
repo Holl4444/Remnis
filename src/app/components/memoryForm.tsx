@@ -32,6 +32,7 @@ export default function MemForm() {
     null
   );
   const [messageClass, setMessageClass] = useState('');
+  const [ textareaState, setTextAreaState ] = useState('')
   const textAreaHeight = useScrollHeight();
 
   // Hide (fade out) the 'Memory Saved' message
@@ -94,6 +95,8 @@ export default function MemForm() {
         name="text-area"
         placeholder="Share your memory or click to edit here..."
         style={{ height: textAreaHeight }}
+        value={textareaState}
+        onChange={e => setTextAreaState(e.target.value)}
       />
       <div className={styles.submitWrap}>
         <p className={`${styles.submitMsg} ${styles[messageClass]}`}>
@@ -105,7 +108,7 @@ export default function MemForm() {
         <button
           type="submit"
           className={`${styles.memFormBtn} ${styles.button}`}
-          disabled={isPending}
+          disabled={isPending || textareaState === ''}
         >
           {isPending ? 'Saving memory' : 'Save memory'}
         </button>

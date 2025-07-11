@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faMicrophoneLines,
@@ -16,6 +16,8 @@ declare global {
 }
 
 export default function AudioRecorder() {
+  // Add state to handle isRecording / not recording / blobhandling
+  const [audioState, setAudioState] = useState('default');
   // Share the current media recorder across the component
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
 
@@ -26,6 +28,7 @@ export default function AudioRecorder() {
       getRecording
     );
     mediaRecorderRef.current.start();
+    setAudioState('recording');
     console.log(`Recording`);
   }
 
@@ -54,20 +57,32 @@ export default function AudioRecorder() {
     }
   }
 
+  // Fired by event listener
   function getRecording(e: BlobEvent) {
-    console.log(`Get recording fired`);
-    const memoryAudio = e.data;
-    console.log(memoryAudio);
-    if (window.localStream) {
-      window.localStream.getTracks().forEach((track) => track.stop());
-      window.localStream = undefined;
+    try {
+      setAudioState('blob handling');
+      const memoryAudio = e.data;
+      console.log(memoryAudio);
+    } catch (err) {
+      console.log(
+        `There is an issue collecting the recording ${err}`
+      );
+    } finally {
+      if (window.localStream) {
+        window.localStream
+          .getTracks()
+          .forEach((track) => track.stop());
+        window.localStream = undefined;
+      }
+      mediaRecorderRef.current = null;
+      setAudioState('default');
     }
-    mediaRecorderRef.current = null;
   }
 
   function handleStopClick() {
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
+      setAudioState('default');
     }
     console.log(`Recording stopped`);
   }
@@ -77,6 +92,10 @@ export default function AudioRecorder() {
       <button
         onClick={handleRecordClick}
         className={`${styles.button} ${styles.recordBtn}`}
+        disabled={
+          audioState === 'recording' ||
+          audioState === 'blob handling'
+        }
       >
         Record
         <span className={styles.icon}>
@@ -86,6 +105,10 @@ export default function AudioRecorder() {
       <button
         onClick={handleStopClick}
         className={`${styles.button} ${styles.stopBtn} `}
+        disabled={
+          audioState === 'default' ||
+          audioState === 'blob handling'
+        }
       >
         Stop
         <span className={styles.icon}>

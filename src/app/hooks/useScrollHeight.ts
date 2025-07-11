@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+
+// Add scroll to bottom
 export function useScrollHeight() {
   const [scrollHeight, setScrollHeight] = useState(0);
 
