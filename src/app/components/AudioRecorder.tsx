@@ -16,10 +16,15 @@ declare global {
 }
 
 export default function AudioRecorder() {
+  // Share the current media recorder across the component
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
 
   function recordStream(stream: MediaStream) {
     mediaRecorderRef.current = new MediaRecorder(stream);
+    mediaRecorderRef.current.addEventListener(
+      'dataavailable',
+      getRecording
+    );
     mediaRecorderRef.current.start();
     console.log(`Recording`);
   }
@@ -42,20 +47,27 @@ export default function AudioRecorder() {
         // Set the <audio> element with id of localAudio's src to be the promise we will return.
         window.localAudio.srcObject = memoryStream;
       }
+
       recordStream(memoryStream);
     } catch (err) {
       console.error(`Unable to record: ${err}`);
     }
   }
 
-  function handleStopClick() {
-    if (mediaRecorderRef.current) {
-      mediaRecorderRef.current.stop();
-      mediaRecorderRef.current = null;
-    }
+  function getRecording(e: BlobEvent) {
+    console.log(`Get recording fired`);
+    const memoryAudio = e.data;
+    console.log(memoryAudio);
     if (window.localStream) {
       window.localStream.getTracks().forEach((track) => track.stop());
       window.localStream = undefined;
+    }
+    mediaRecorderRef.current = null;
+  }
+
+  function handleStopClick() {
+    if (mediaRecorderRef.current) {
+      mediaRecorderRef.current.stop();
     }
     console.log(`Recording stopped`);
   }
