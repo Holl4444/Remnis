@@ -79,7 +79,7 @@ import { toFile } from 'openai/uploads';
     model: 'whisper-1',
   });
 
-}
+
 ```
 
 I also made it into a PWA in the hopes of doing away with the browser bar - you live and learn - there's always a bar if not a browser bar!
