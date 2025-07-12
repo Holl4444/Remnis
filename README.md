@@ -90,3 +90,9 @@ I also made it into a PWA in the hopes of doing away with the browser bar - you 
 Next big addition will be the database.
 
 #### Screenshots
+
+<img width="385" height="454" alt="image" src="https://github.com/user-attachments/assets/01c1c435-182a-4625-bb0b-eb21854fcaeb" />
+
+<img width="385" height="454" alt="image" src="https://github.com/user-attachments/assets/e67a49a2-2107-41a5-98ef-26b6a1047799" />
+
+
