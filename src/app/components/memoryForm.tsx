@@ -88,7 +88,7 @@ export default function MemForm() {
           />
         </div>
       </section>
-      <AudioRecorder/>
+      <AudioRecorder onTranscription={setTextAreaState} />
       <textarea
         className={styles.textarea}
         id="text-area"

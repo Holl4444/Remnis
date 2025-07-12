@@ -55,11 +55,11 @@
   filter: drop-shadow(1px 1px #1d4232);
 }
 
-.transcribeBtn:hover {
+.transcribeBtn:hover, .transcribeBtn:active, .transcribeBtn:focus {
   text-shadow: none;
 }
 
-.transcribeBtn .icon:hover {
+.transcribeBtn:hover .icon, .transcribeBtn:active .icon, .transcribeBtn:focus .icon {
   filter: none;
 }
 

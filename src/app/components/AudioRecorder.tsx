@@ -16,7 +16,8 @@ declare global {
   }
 }
 
-export default function AudioRecorder() {
+
+export default function AudioRecorder({ onTranscription }: { onTranscription: (text: string) => void }) {
   // Add state to handle isRecording / not recording / blobhandling
   const [audioState, setAudioState] = useState('default');
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
@@ -60,6 +61,8 @@ export default function AudioRecorder() {
   }
 
   // Fired by event listener
+  // Get the blob returned by the mediaRecorder and save to state
+  // Clean up local stream
   function getRecording(e: BlobEvent) {
     try {
       setAudioState('blob handling');
@@ -93,7 +96,40 @@ export default function AudioRecorder() {
   function deleteTrack() {
     console.log('deleting track...');
     setAudioBlob(null);
+    onTranscription('');
     setAudioState('default');
+  }
+
+  function convertAudio() {
+    if (audioBlob) {
+      const audioFile = new File([audioBlob], 'audio.webm', {
+        type: 'audio/webm',
+      });
+      const fileData = new FormData();
+      fileData.append('audioFile', audioFile);
+      return fileData;
+    }
+    console.error(`No audio detected.`);
+  }
+
+  // Blob -> File -> Formdata
+  async function postAudioFile() {
+    try {
+      const audioForm = convertAudio();
+      const response = await fetch('/api/transcribe', {
+        method: 'POST',
+        body: audioForm,
+      });
+      if (!audioForm) {
+        throw new Error(`Transcription unsuccessful`);
+      }
+
+      const result = await response.json();
+      onTranscription(result.text);
+      console.log(result);
+    } catch (err) {
+      console.error(`Request could not be sent: ${err}`);
+    }
   }
 
   return (
@@ -131,7 +167,10 @@ export default function AudioRecorder() {
         audioBlob && (
           <div className={styles.audioPlayerWrap}>
             <div className={styles.audioBtnWrap}>
-              <button className={styles.transcribeBtn}>
+              <button
+                onClick={postAudioFile}
+                className={styles.transcribeBtn}
+              >
                 Transcribe
                 <span className={styles.icon}>
                   <FontAwesomeIcon icon={faPencil} />
