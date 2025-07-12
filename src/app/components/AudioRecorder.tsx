@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faMicrophoneLines,
   faMicrophoneLinesSlash,
+  faPencil
 } from '@fortawesome/free-solid-svg-icons';
 import styles from './AudioRecorder.module.css';
 
@@ -18,6 +19,7 @@ declare global {
 export default function AudioRecorder() {
   // Add state to handle isRecording / not recording / blobhandling
   const [audioState, setAudioState] = useState('default');
+  const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   // Share the current media recorder across the component
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
 
@@ -62,6 +64,7 @@ export default function AudioRecorder() {
     try {
       setAudioState('blob handling');
       const memoryAudio = e.data;
+      setAudioBlob(memoryAudio);
       console.log(memoryAudio);
     } catch (err) {
       console.log(
@@ -75,7 +78,7 @@ export default function AudioRecorder() {
         window.localStream = undefined;
       }
       mediaRecorderRef.current = null;
-      setAudioState('default');
+      setAudioState('player');
     }
   }
 
@@ -88,33 +91,59 @@ export default function AudioRecorder() {
   }
 
   return (
-    <div className={styles.recordControls}>
-      <button
-        onClick={handleRecordClick}
-        className={`${styles.button} ${styles.recordBtn}`}
-        disabled={
-          audioState === 'recording' ||
-          audioState === 'blob handling'
-        }
-      >
-        Record
-        <span className={styles.icon}>
-          <FontAwesomeIcon icon={faMicrophoneLines} />
-        </span>
-      </button>
-      <button
-        onClick={handleStopClick}
-        className={`${styles.button} ${styles.stopBtn} `}
-        disabled={
-          audioState === 'default' ||
-          audioState === 'blob handling'
-        }
-      >
-        Stop
-        <span className={styles.icon}>
-          <FontAwesomeIcon icon={faMicrophoneLinesSlash} />
-        </span>
-      </button>
-    </div>
+    <>
+      {audioState !== 'player' ? (
+        <div className={styles.recordControls}>
+          <button
+            onClick={handleRecordClick}
+            className={`${styles.button} ${styles.recordBtn}`}
+            disabled={
+              audioState === 'recording' ||
+              audioState === 'blob handling'
+            }
+          >
+            Record
+            <span className={styles.icon}>
+              <FontAwesomeIcon icon={faMicrophoneLines} />
+            </span>
+          </button>
+          <button
+            onClick={handleStopClick}
+            className={`${styles.button} ${styles.stopBtn} `}
+            disabled={
+              audioState === 'default' ||
+              audioState === 'blob handling'
+            }
+          >
+            Stop
+            <span className={styles.icon}>
+              <FontAwesomeIcon icon={faMicrophoneLinesSlash} />
+            </span>
+          </button>
+        </div>
+      ) : (
+        audioBlob && (
+          <div className={styles.audioPlayerWrap}>
+            <div className={styles.audioBtnWrap}>
+              <button className={styles.transcribeBtn}>
+                Transcribe
+                <span className={styles.icon}>
+                  <FontAwesomeIcon icon={faPencil} />
+                </span>
+              </button>
+              <button className={styles.deleteTrackBtn}>
+                Delete
+              </button>
+            </div>
+            <audio
+              className={styles.audioPlayer}
+              controls
+              src={URL.createObjectURL(audioBlob)}
+            />
+          </div>
+        )
+      )}
+    </>
   );
 }
+

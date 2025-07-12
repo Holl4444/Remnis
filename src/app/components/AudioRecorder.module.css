@@ -4,11 +4,63 @@
 
 .recordControls .recordBtn {
   background-color: #e47b6f;
+  text-shadow: 0 0 1px #9e564f, 1px 1px #9e564f;
   color: #191944;
+}
+
+.recordControls .recordBtn:hover {
+  background-color: #e24837;
+  text-shadow: 0 0 1px #eb5d4d, 1px 1px #eb5d4d;
+}
+
+.recordBtn .icon {
+  filter: drop-shadow(1px 1px #854843);
+}
+
+.recordBtn .icon:hover {
+  filter: none;
 }
 
 .icon {
   margin-left: 0.5em;
+}
+
+.audioPlayerWrap {
+  margin: 0.5em 0;
+  width: 100%;
+}
+
+.audioPlayer {
+  width: 100%;
+}
+
+.audioBtnWrap {
+  display: flex;
+  column-gap: 0.5em;
+  width: 100%;
+  margin: 0.5em 0;
+}
+
+.audioBtnWrap button {
+  width: 100%;
+  font-size: 1em;
+}
+
+.transcribeBtn {
+  background-color: #4db687;
+  text-shadow: 0 0 2px #1d4232, 1px 1px #1d4232;
+}
+
+.transcribeBtn .icon {
+  filter: drop-shadow(1px 1px #1d4232);
+}
+
+.transcribeBtn:hover {
+  text-shadow: none;
+}
+
+.transcribeBtn .icon:hover {
+  filter: none;
 }
 
 @media (min-width: 768px) {
@@ -20,7 +72,8 @@
 }
 
 @media (min-width: 1024px) {
-  .recordControls {
+  .recordControls,
+  .audioBtnWrap {
     gap: 1.2em;
   }
 
@@ -29,12 +82,13 @@
     width: 30%;
   }
 
-  .recordControls .recordBtn:hover {
-    background-color: #e24837;
-  }
-
   .recordControls .stopBtn {
     margin: 1em 0;
     width: 30%;
+  }
+
+  .audioPlayerWrap {
+    width: 63%;
+    margin: 0 auto;
   }
 }
