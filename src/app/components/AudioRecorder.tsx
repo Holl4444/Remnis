@@ -16,9 +16,12 @@ declare global {
   }
 }
 
-
-export default function AudioRecorder({ onTranscription }: { onTranscription: (text: string) => void }) {
-  // Add state to handle isRecording / not recording / blobhandling
+export default function AudioRecorder({
+  onTranscription,
+}: {
+  onTranscription: (text: string) => void;
+}) {
+  // Audiostate handles UI for isRecording / not recording / blobhandling / playing audio
   const [audioState, setAudioState] = useState('default');
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   // Share the current media recorder across the component
@@ -39,7 +42,7 @@ export default function AudioRecorder({ onTranscription }: { onTranscription: (t
     try {
       if (!navigator.mediaDevices) {
         throw new Error(`Unsupported browser - needs getUserMedia`);
-        // Notify user softly
+        // TODO: Notify user softly
       }
       // MediaStream object
       const memoryStream = await navigator.mediaDevices.getUserMedia({
@@ -81,7 +84,7 @@ export default function AudioRecorder({ onTranscription }: { onTranscription: (t
         window.localStream = undefined;
       }
       mediaRecorderRef.current = null;
-      setAudioState('player');
+      setAudioState('playing');
     }
   }
 
@@ -134,7 +137,7 @@ export default function AudioRecorder({ onTranscription }: { onTranscription: (t
 
   return (
     <>
-      {audioState !== 'player' ? (
+      {audioState !== 'playing' ? (
         <div className={styles.recordControls}>
           <button
             onClick={handleRecordClick}

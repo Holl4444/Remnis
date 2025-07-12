@@ -32,6 +32,7 @@
 
 .audioPlayer {
   width: 100%;
+  filter: drop-shadow(1px 2px 2px #7c7d7e)
 }
 
 .audioBtnWrap {
@@ -88,7 +89,7 @@
   }
 
   .audioPlayerWrap {
-    width: 63%;
+    width: 60%;
     margin: 0 auto;
   }
 }
