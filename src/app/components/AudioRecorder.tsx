@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faMicrophoneLines,
   faMicrophoneLinesSlash,
-  faPencil
+  faPencil,
 } from '@fortawesome/free-solid-svg-icons';
 import styles from './AudioRecorder.module.css';
 
@@ -90,6 +90,12 @@ export default function AudioRecorder() {
     console.log(`Recording stopped`);
   }
 
+  function deleteTrack() {
+    console.log('deleting track...');
+    setAudioBlob(null);
+    setAudioState('default');
+  }
+
   return (
     <>
       {audioState !== 'player' ? (
@@ -131,7 +137,10 @@ export default function AudioRecorder() {
                   <FontAwesomeIcon icon={faPencil} />
                 </span>
               </button>
-              <button className={styles.deleteTrackBtn}>
+              <button
+                onClick={deleteTrack}
+                className={styles.deleteTrackBtn}
+              >
                 Delete
               </button>
             </div>
@@ -146,4 +155,3 @@ export default function AudioRecorder() {
     </>
   );
 }
-
