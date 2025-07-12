@@ -142,6 +142,7 @@ export default function AudioRecorder({
           <button
             onClick={handleRecordClick}
             className={`${styles.button} ${styles.recordBtn}`}
+            type="button"
             disabled={
               audioState === 'recording' ||
               audioState === 'blob handling'
@@ -155,6 +156,7 @@ export default function AudioRecorder({
           <button
             onClick={handleStopClick}
             className={`${styles.button} ${styles.stopBtn} `}
+            type="button"
             disabled={
               audioState === 'default' ||
               audioState === 'blob handling'
@@ -173,6 +175,7 @@ export default function AudioRecorder({
               <button
                 onClick={postAudioFile}
                 className={styles.transcribeBtn}
+                type="button"
               >
                 Transcribe
                 <span className={styles.icon}>
@@ -182,6 +185,7 @@ export default function AudioRecorder({
               <button
                 onClick={deleteTrack}
                 className={styles.deleteTrackBtn}
+                type="button"
               >
                 Delete
               </button>
