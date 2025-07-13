@@ -28,6 +28,7 @@ To start the development server:
 ```
 npm run dev
 ```
+For development you will also need to create an .env.local folder in the root of the project. You will also need an OpenAI API key, which you can get by creating an account at https://platform.openai.com/docs/api-reference/introduction. You should then add the key to the .env.local file as OPENAI_API_KEY=sk-....
 
 ### Key Skills
 - Mobile first, responsive css
