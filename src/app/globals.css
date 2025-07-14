@@ -42,7 +42,7 @@ button {
   color: #fff;
   box-shadow: 1px 2px 2px #6a7c92, 1px 2px 3px #bdcada,
     1px 2px 4px #d1dae6;
-  transition: all 60ms ease-out;
+  transition: all 150ms ease-out;
 }
 
 button:hover,

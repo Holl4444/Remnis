@@ -17,6 +17,7 @@
   margin-bottom: 0.75em;
   font-family: 'Nunito';
   font-size: 1.05rem;
+  transition: all 150ms ease-out;
 }
 
 .textarea {
