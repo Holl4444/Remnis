@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faMicrophoneLines,
@@ -26,6 +26,13 @@ export default function AudioRecorder({
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   // Share the current media recorder across the component
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const transcribeBtnRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (audioState === 'playing' && transcribeBtnRef.current) {
+      transcribeBtnRef.current.focus();
+    }
+  }, [audioState]);
 
   function recordStream(stream: MediaStream) {
     mediaRecorderRef.current = new MediaRecorder(stream);
@@ -137,12 +144,21 @@ export default function AudioRecorder({
 
   return (
     <>
+      <div aria-live="polite" className={styles.sr}>
+        {audioState === 'playing'
+          ? 'Recording complete. Playback, transcription and delete options available.'
+          : audioState === 'recording'
+          ? 'Recording in progress.'
+          : ''}
+      </div>
+
       {audioState !== 'playing' ? (
         <div className={styles.recordControls}>
           <button
             onClick={handleRecordClick}
             className={`${styles.button} ${styles.recordBtn}`}
             type="button"
+            aria-label="Start Recording"
             disabled={
               audioState === 'recording' ||
               audioState === 'blob handling'
@@ -157,6 +173,7 @@ export default function AudioRecorder({
             onClick={handleStopClick}
             className={`${styles.button} ${styles.stopBtn} `}
             type="button"
+            aria-label="Stop Recording"
             disabled={
               audioState === 'default' ||
               audioState === 'blob handling'
@@ -176,6 +193,8 @@ export default function AudioRecorder({
                 onClick={postAudioFile}
                 className={styles.transcribeBtn}
                 type="button"
+                aria-label="Transcribe audio"
+                ref={transcribeBtnRef}
               >
                 Transcribe
                 <span className={styles.icon}>
@@ -186,6 +205,7 @@ export default function AudioRecorder({
                 onClick={deleteTrack}
                 className={styles.deleteTrackBtn}
                 type="button"
+                aria-label="Delete recording"
               >
                 Delete
               </button>

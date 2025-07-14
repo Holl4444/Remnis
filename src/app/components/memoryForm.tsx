@@ -88,7 +88,7 @@ export default function MemForm() {
           />
         </div>
       </section>
-      
+
       <AudioRecorder onTranscription={setTextAreaState} />
 
       <div className={styles.submitWrap}>
