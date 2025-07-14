@@ -1,8 +1,8 @@
 'use client';
 import { useActionState, useState, useEffect } from 'react';
-import { useScrollHeight } from '../hooks/useScrollHeight';
+// import { useScrollHeight } from '../hooks/useScrollHeight';
 import AudioRecorder from './AudioRecorder';
-
+import ResizableTextarea from './Textarea';
 import styles from './memoryForm.module.css';
 
 interface Memory {
@@ -32,8 +32,8 @@ export default function MemForm() {
     null
   );
   const [messageClass, setMessageClass] = useState('');
-  const [ textareaState, setTextAreaState ] = useState('')
-  const textAreaHeight = useScrollHeight();
+  const [textareaState, setTextAreaState] = useState('');
+  // const textAreaHeight = useScrollHeight();
 
   // Hide (fade out) the 'Memory Saved' message
   useEffect(() => {
@@ -88,23 +88,22 @@ export default function MemForm() {
           />
         </div>
       </section>
+      
       <AudioRecorder onTranscription={setTextAreaState} />
-      <textarea
-        className={styles.textarea}
-        id="text-area"
-        name="text-area"
-        placeholder="Share your memory or click to edit here..."
-        style={{ height: textAreaHeight }}
-        value={textareaState}
-        onChange={(e) => setTextAreaState(e.target.value)}
-      />
+
       <div className={styles.submitWrap}>
         <p className={`${styles.submitMsg} ${styles[messageClass]}`}>
           {state &&
             !isPending &&
             ('issue' in state ? state.issue : 'Memory Saved')}
         </p>
-
+        <ResizableTextarea
+          value={textareaState}
+          onChange={(e) => setTextAreaState(e.target.value)}
+          id="text-area"
+          name="text-area"
+          placeholder="Share your memory or click to edit here..."
+        />
         <button
           type="submit"
           className={`${styles.memFormBtn} ${styles.button}`}

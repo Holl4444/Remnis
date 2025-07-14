@@ -56,6 +56,7 @@
   margin-top: 0;
   box-shadow: 2px 3px 3px #6a7c92, 2px 3px 4px #bdcada,
     2px 3px 5px #d1dae6;
+
 }
 
 .submitWrap {
@@ -86,6 +87,7 @@
     justify-content: center;
     row-gap: 1em;
   }
+
   .memFormInput {
     width: 60%;
     display: flex;
@@ -103,10 +105,6 @@
   }
 
   .textarea {
-    padding: 1.5em;
-  }
-
-  .textarea {
     min-height: 32vh;
     margin-bottom: 0.5em;
     margin-top: 1em;
@@ -114,5 +112,6 @@
     width: 62%;
     margin: 0 auto;
     margin-top: 1em;
+    padding: 1.5em;
   }
 }

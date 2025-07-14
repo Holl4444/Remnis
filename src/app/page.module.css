@@ -11,6 +11,7 @@
   background-image: url('/lukasz-lada-LtWFFVi1RXQ-unsplash.jpg');
   background-size: cover;
   background-position: bottom;
+  background-attachment: fixed;
 }
 
 .main {
