@@ -3,7 +3,11 @@
   min-height: 100vh;
   font-size: 16px;
   line-height: 1.3;
-  background-color: aliceblue;      
+  background-color: aliceblue;
+  background-image: image-set(
+    url('/lukasz-lada-LtWFFVi1RXQ-unsplash.avif') type('image/avif'),
+    url('/lukasz-lada-LtWFFVi1RXQ-unsplash.webp') type('image/webp')
+  );
   background-image: url('/lukasz-lada-LtWFFVi1RXQ-unsplash.jpg');
   background-size: cover;
   background-position: bottom;
