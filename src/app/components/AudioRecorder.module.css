@@ -2,6 +2,13 @@
   margin: 0.5em 0 0 0;
 }
 
+.recordControls .recordBtn, .recordControls .stopBtn, .transcribeBtn, .deleteTrackBtn {
+  height: 3em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .recordControls .recordBtn {
   background-color: #e47b6f;
   text-shadow: 0 0 1px #9e564f, 1px 1px #9e564f;
@@ -91,6 +98,10 @@
   .recordControls,
   .audioBtnWrap {
     gap: 1.2em;
+  }
+
+  .recordControls .recordBtn, .recordControls .stopBtn, .transcribeBtn, .deleteTrackBtn {
+    height: 4em;
   }
 
   .recordControls .recordBtn {
