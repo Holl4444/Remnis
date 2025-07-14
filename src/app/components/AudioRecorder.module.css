@@ -32,7 +32,7 @@
 
 .audioPlayer {
   width: 100%;
-  filter: drop-shadow(1px 2px 2px #7c7d7e)
+  filter: drop-shadow(1px 2px 2px #7c7d7e);
 }
 
 .audioBtnWrap {
@@ -56,11 +56,15 @@
   filter: drop-shadow(1px 1px #1d4232);
 }
 
-.transcribeBtn:hover, .transcribeBtn:active, .transcribeBtn:focus {
+.transcribeBtn:hover,
+.transcribeBtn:active,
+.transcribeBtn:focus {
   text-shadow: none;
 }
 
-.transcribeBtn:hover .icon, .transcribeBtn:active .icon, .transcribeBtn:focus .icon {
+.transcribeBtn:hover .icon,
+.transcribeBtn:active .icon,
+.transcribeBtn:focus .icon {
   filter: none;
 }
 
@@ -73,6 +77,10 @@
 }
 
 @media (min-width: 1024px) {
+  .recordControls {
+    margin: 0 1em;
+  }
+
   .recordControls,
   .audioBtnWrap {
     gap: 1.2em;
@@ -89,7 +97,7 @@
   }
 
   .audioPlayerWrap {
-    width: 60%;
+    width: 50%;
     margin: 0 auto;
   }
 }
