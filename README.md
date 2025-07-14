@@ -5,6 +5,7 @@
 [Built With](#built-with)\
 [Requirements](#requirements)\
 [Key Skills](#key-skills)\
+[Image Credits](#image-credits)\
 [The Process](#the-process)\
 [Continued Development](#continued-development)\
 [Screenshots](#screenshots)
@@ -37,6 +38,11 @@ For development you will also need to create an .env.local folder in the root of
 - Audio Recording
 - Safe audiofile transcription
 - PWA
+
+### Image Credits
+Photo by Łukasz Łada on Unsplash: "https://unsplash.com/@lukaszlada?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"\
+"https://unsplash.com/photos/sea-of-clouds-LtWFFVi1RXQ?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+      
 
 #### The Process
 I had originally planned to put this project together with Node.js but transferred it over to Next.js when, having a better idea of the code it seemed the best fit for the project.  It was easier to create a new project than update but the drawback is that the commits for the very early stages are in the old repo, so if you're interested you can see the project taking shape here: https://github.com/Holl4444/RemnisReact. The move did simplify the routes, allowing me to try out features like NextRequest and NextResponse and I was really pleased with how smooth they were to use. 

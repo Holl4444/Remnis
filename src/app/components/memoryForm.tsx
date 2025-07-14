@@ -96,7 +96,7 @@ export default function MemForm() {
         placeholder="Share your memory or click to edit here..."
         style={{ height: textAreaHeight }}
         value={textareaState}
-        onChange={e => setTextAreaState(e.target.value)}
+        onChange={(e) => setTextAreaState(e.target.value)}
       />
       <div className={styles.submitWrap}>
         <p className={`${styles.submitMsg} ${styles[messageClass]}`}>
