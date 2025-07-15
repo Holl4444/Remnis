@@ -33,16 +33,23 @@ export default function MemForm() {
   );
   const [messageClass, setMessageClass] = useState('');
   const [textareaState, setTextAreaState] = useState('');
-  // const textAreaHeight = useScrollHeight();
+  const [transcriptionError, setTranscriptionError] = useState('');
 
-  // Hide (fade out) the 'Memory Saved' message
+  function handleTransciptionError(error: unknown) {
+    setTranscriptionError(error instanceof Error ? error.message : String(error))
+  };
+
+  // Update UI & Hide (fade out) the 'Memory Saved' message
   useEffect(() => {
     if (state && !isPending) {
       setTextAreaState('');
       setMessageClass('');
       setTimeout(() => setMessageClass('hidden'), 3000);
+    } else if (transcriptionError) {
+      setMessageClass('');
+      setTimeout(() => setMessageClass('hidden'), 5000);
     }
-  }, [state, isPending]);
+  }, [state, isPending, transcriptionError]);
 
   return (
     <form action={formAction} className={styles.memForm}>
@@ -90,13 +97,20 @@ export default function MemForm() {
         </div>
       </section>
 
-      <AudioRecorder onTranscription={setTextAreaState} />
+      <AudioRecorder
+        onTranscription={setTextAreaState}
+        onTranscriptionError={handleTransciptionError}
+      />
 
       <div className={styles.submitWrap}>
-        <p className={`${styles.submitMsg} ${styles[messageClass]}`}>
+        <p
+          className={`${styles.submitMsg} ${styles[messageClass]}`}
+          data-testid="msgEl"
+        >
           {state &&
             !isPending &&
             ('issue' in state ? state.issue : 'Memory Saved')}
+          {transcriptionError && transcriptionError}
         </p>
         <ResizableTextarea
           value={textareaState}

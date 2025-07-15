@@ -17,9 +17,9 @@ declare global {
 }
 
 export default function AudioRecorder({
-  onTranscription,
+  onTranscription, onTranscriptionError
 }: {
-  onTranscription: (text: string) => void;
+    onTranscription: (text: string) => void, onTranscriptionError: (errorMessage: string) => void;
 }) {
   // Audiostate handles UI for isRecording / not recording / blobhandling / playing audio
   const [audioState, setAudioState] = useState('default');
@@ -135,8 +135,12 @@ export default function AudioRecorder({
       }
 
       const result = await response.json();
-      onTranscription(result.text);
-      console.log(result);
+      if (!result.success) {
+        if (onTranscriptionError) onTranscriptionError(result.errorMessage);
+      } else {
+        onTranscription(result.text);
+        console.log(result);
+      }
     } catch (err) {
       console.error(`Request could not be sent: ${err}`);
     }
