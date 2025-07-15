@@ -40,8 +40,9 @@ For development you will also need to create an .env.local folder in the root of
 - PWA
 
 ### Image Credits
-Photo by Łukasz Łada on Unsplash: "https://unsplash.com/@lukaszlada?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"\
-"https://unsplash.com/photos/sea-of-clouds-LtWFFVi1RXQ?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+Photo by [Łukasz Łada@Unsplash](https://unsplash.com/@lukaszlada?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash)
+
+https://unsplash.com/photos/sea-of-clouds-LtWFFVi1RXQ?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash
       
 
 #### The Process
