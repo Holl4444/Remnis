@@ -25,6 +25,7 @@ describe('MemForm testing', () => {
     expect(subBtn).toBeTruthy();
     expect(textArea).toBeTruthy();
   });
+  
 
   it('should submit text-area input', async () => {
     render(<MemForm />);
@@ -45,6 +46,7 @@ describe('MemForm testing', () => {
     expect(screen.getByText('Memory Saved')).toBeTruthy();
   });
 
+
   it('should disable the submit button when text-area is empty', async () => {
     render(<MemForm />);
 
@@ -55,6 +57,7 @@ describe('MemForm testing', () => {
     expect(subBtn).toBeDisabled();
     expect(screen.queryByText('Add a memory to bank :)')).toBeFalsy();
   });
+
 
   it('should clear the text area on form submission', async () => {
     render(<MemForm />);
@@ -78,10 +81,8 @@ describe('MemForm testing', () => {
         expect(textArea.value).toBe(''); 
       }
     );    
-
-    
-
   })
+
 
   it('should display an error on transcription error ', async () => {
     render(<MemForm />);
@@ -90,12 +91,12 @@ describe('MemForm testing', () => {
     const msgEl = screen.getByTestId('msgEl');
 
     await userEvent.click(triggerErrorBtn);
-
     
     expect(msgEl.textContent?.trim().length).toBeGreaterThan(0);
     expect(msgEl.textContent).toContain('Mocked error!');
 
   });
+
 
   it('should remove messages after 3 seconds', async () => {
     render(<MemForm />);
