@@ -1,6 +1,9 @@
 
 # $${\color{salmon}Remnis}$$
 
+<img width="300" height="300" alt="image" src="https://github.com/user-attachments/assets/b5963f3c-75eb-4e30-a731-42fd5951502c" /><br/>
+
+
 [Overview](#overview)\
 [Built With](#built-with)\
 [Requirements](#requirements)\
