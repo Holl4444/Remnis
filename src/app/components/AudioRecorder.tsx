@@ -98,7 +98,6 @@ export default function AudioRecorder({
   function handleStopClick() {
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
-      setAudioState('default');
     }
     console.log(`Recording stopped`);
   }
