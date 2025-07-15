@@ -34,22 +34,36 @@ export default function MemForm() {
   const [messageClass, setMessageClass] = useState('');
   const [textareaState, setTextAreaState] = useState('');
   const [transcriptionError, setTranscriptionError] = useState('');
+  // Audiostate handles UI for isRecording / not recording / blobhandling / playing audio
+  const [audioStatusMsg, setAudioStatusMsg] = useState<string>('');
 
   function handleTransciptionError(error: unknown) {
-    setTranscriptionError(error instanceof Error ? error.message : String(error))
-  };
+    setTranscriptionError(
+      error instanceof Error ? error.message : String(error)
+    );
+  }
 
-  // Update UI & Hide (fade out) the 'Memory Saved' message
+  // Update UI & Hide (fade out) the messages. Clear any previous msg
   useEffect(() => {
+    //Track which message needs cancelling if another is called
+    let msgId: ReturnType<typeof setTimeout>;
+
     if (state && !isPending) {
       setTextAreaState('');
       setMessageClass('');
-      setTimeout(() => setMessageClass('hidden'), 3000);
+      msgId = setTimeout(() => setMessageClass('hidden'), 3000);
     } else if (transcriptionError) {
       setMessageClass('');
-      setTimeout(() => setMessageClass('hidden'), 5000);
+      msgId = setTimeout(() => setMessageClass('hidden'), 5000);
+    } else if (audioStatusMsg) {
+      setMessageClass('');
+      msgId = setTimeout(() => setMessageClass('hidden'), 2000);
+    } else {
+      setMessageClass('');
+      msgId = setTimeout(() => setMessageClass('hidden'), 3000);
     }
-  }, [state, isPending, transcriptionError]);
+    return () => clearTimeout(msgId);
+  }, [state, isPending, transcriptionError, audioStatusMsg]);
 
   return (
     <form action={formAction} className={styles.memForm}>
@@ -100,6 +114,7 @@ export default function MemForm() {
       <AudioRecorder
         onTranscription={setTextAreaState}
         onTranscriptionError={handleTransciptionError}
+        onAudioStateChange={setAudioStatusMsg}
       />
 
       <div className={styles.submitWrap}>
@@ -111,6 +126,7 @@ export default function MemForm() {
             !isPending &&
             ('issue' in state ? state.issue : 'Memory Saved')}
           {transcriptionError && transcriptionError}
+          {audioStatusMsg && audioStatusMsg}
         </p>
         <ResizableTextarea
           value={textareaState}

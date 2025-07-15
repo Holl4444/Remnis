@@ -17,12 +17,22 @@ declare global {
 }
 
 export default function AudioRecorder({
-  onTranscription, onTranscriptionError
+  onTranscription,
+  onTranscriptionError,
+  onAudioStateChange,
 }: {
-    onTranscription: (text: string) => void, onTranscriptionError: (errorMessage: string) => void;
+  onTranscription: (text: string) => void;
+  onTranscriptionError: (errorMessage: string) => void;
+  onAudioStateChange: (state: string) => void;
 }) {
   // Audiostate handles UI for isRecording / not recording / blobhandling / playing audio
-  const [audioState, setAudioState] = useState('default');
+  const [audioState, setAudioState] = useState<
+    | 'default'
+    | 'recording'
+    | 'playing'
+    | 'transcribing'
+    | 'blob handling'
+  >('default');
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   // Share the current media recorder across the component
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -33,6 +43,18 @@ export default function AudioRecorder({
       transcribeBtnRef.current.focus();
     }
   }, [audioState]);
+
+  useEffect(() => {
+    if (onAudioStateChange) {
+      if (audioState === 'recording')
+        onAudioStateChange('Recording...');
+      else if (audioState === 'playing')
+        onAudioStateChange('Recording complete.');
+      else if (audioState === 'transcribing')
+        onAudioStateChange('Transcribing...');
+      else onAudioStateChange('');
+    }
+  }, [audioState, onAudioStateChange]);
 
   function recordStream(stream: MediaStream) {
     mediaRecorderRef.current = new MediaRecorder(stream);
@@ -124,6 +146,7 @@ export default function AudioRecorder({
   // Blob -> File -> Formdata
   async function postAudioFile() {
     try {
+      setAudioState('transcribing');
       const audioForm = convertAudio();
       const response = await fetch('/api/transcribe', {
         method: 'POST',
@@ -134,8 +157,10 @@ export default function AudioRecorder({
       }
 
       const result = await response.json();
+
       if (!result.success) {
-        if (onTranscriptionError) onTranscriptionError(result.errorMessage);
+        if (onTranscriptionError)
+          onTranscriptionError(result.errorMessage);
       } else {
         onTranscription(result.text);
         console.log(result);
@@ -152,6 +177,8 @@ export default function AudioRecorder({
           ? 'Recording complete. Playback, transcription and delete options available.'
           : audioState === 'recording'
           ? 'Recording in progress.'
+          : audioState === 'transcribing'
+          ? 'Transcribing audio...'
           : ''}
       </div>
 
@@ -178,8 +205,7 @@ export default function AudioRecorder({
             type="button"
             aria-label="Stop Recording"
             disabled={
-              audioState === 'default' ||
-              audioState === 'blob handling'
+              audioState !== 'recording'
             }
           >
             Stop

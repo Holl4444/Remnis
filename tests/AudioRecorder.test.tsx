@@ -62,7 +62,8 @@ describe('AudioRecorder component tests', () => {
     render(
       <AudioRecorder
         onTranscription={() => {}}
-        onTranscriptionError={() => {}}
+        onTranscriptionError={() => { }}
+        onAudioStateChange={() => {}}
       />
     );
     // press record -> press stop
