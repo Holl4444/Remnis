@@ -1,7 +1,7 @@
 import React from 'react';
 import MemForm from '../src/app/components/memoryForm';
 import { it, expect, describe, vi } from 'vitest';
-import { getByPlaceholderText, getByTestId, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 // Mock AudioRecorder to render a button
