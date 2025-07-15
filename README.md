@@ -100,11 +100,12 @@ Next big addition will be the database.
 
 #### Screenshots
 
-<p>
-<img width="240" height="341" alt="image" src="https://github.com/user-attachments/assets/be665d79-03c7-46b3-a1c5-572c66cc7eae" />
-<img width="530" height="341" alt="image" src="https://github.com/user-attachments/assets/80126241-afcd-4a11-bac5-68de00026577" />
-<img width="770" height="955" alt="image" src="https://github.com/user-attachments/assets/b7666226-40ac-4368-aa07-1a31e7feac68" />
-</p>
+
+<img width="240" height="341" alt="image" src="https://github.com/user-attachments/assets/7c3071a4-210c-455b-9a5f-77529f28d0b6" />
+<img width="530" height="341" alt="image" src="https://github.com/user-attachments/assets/d5ed3a73-922c-424c-9f68-0aff127102e1" /><br/><br/>
+
+<img width="770" height="955" alt="image" src="https://github.com/user-attachments/assets/247330a5-8201-40f6-855b-ec65ad16ff27" />
+
 
 
 
