@@ -38,6 +38,7 @@ For development you will also need to create an .env.local folder in the root of
 - Audio Recording
 - Safe audiofile transcription
 - PWA
+- Unit testing
 
 ### Image Credits
 Photo by [Łukasz Łada@Unsplash](https://unsplash.com/@lukaszlada?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash)
@@ -100,14 +101,12 @@ Next big addition will be the database.
 #### Screenshots
 
 <p>
-<img width="289" height="341" alt="image" src="https://github.com/user-attachments/assets/db8e8e1c-2c75-46f2-96e9-e18b73a90e0c" />
-<img width="530" height="341" alt="image" src="https://github.com/user-attachments/assets/6870898c-24ad-4566-9a12-5f9b2881c359" />
+<img width="240" height="341" alt="image" src="https://github.com/user-attachments/assets/be665d79-03c7-46b3-a1c5-572c66cc7eae" />
+<img width="530" height="341" alt="image" src="https://github.com/user-attachments/assets/80126241-afcd-4a11-bac5-68de00026577" />
+<img width="770" height="955" alt="image" src="https://github.com/user-attachments/assets/b7666226-40ac-4368-aa07-1a31e7feac68" />
 </p>
-<p>
-<img width="530" height="341" alt="image" src="https://github.com/user-attachments/assets/13011698-b2e6-4c9a-a882-4050f22ed8f4" />
-<img width="289" height="341" alt="image" src="https://github.com/user-attachments/assets/d1e36139-b1cf-41f8-8b46-0904a11b792e" />
 
-</p>
+
 
 
 
