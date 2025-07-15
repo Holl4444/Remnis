@@ -19,10 +19,9 @@
   min-width: 320px;
   max-width: 1000px;
   text-align: center;
-  background-color: #fff;
   margin: 0 auto;
   padding: 0.5em;
-  background-color: #5a5e77;
+  background-color: #14142e;
   filter: drop-shadow(0 3px 5px #6f728d);
   position: relative;
 }
