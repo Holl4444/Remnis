@@ -6,7 +6,7 @@
   background-color: aliceblue;
   background-image: image-set(
     url('/lukasz-lada-LtWFFVi1RXQ-unsplash.avif') type('image/avif'),
-    url('/lukasz-lada-LtWFFVi1RXQ-unsplash.webp') type('image/webp')
+    url('/lukasz-lada-LtWFFVi1RXQ-unsplash.webp') type('image/webp'),
   );
   background-image: url('/lukasz-lada-LtWFFVi1RXQ-unsplash.jpg');
   background-size: cover;

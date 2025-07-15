@@ -87,8 +87,5 @@ describe('AudioRecorder component tests', () => {
       expect(transcribeBtn).toBeEnabled();
       expect(document.activeElement).toBe(transcribeBtn);
     });
-    expect(transcribeBtn).toBeDefined();
-    expect(transcribeBtn).toBeEnabled();
-    expect(document.activeElement).toBe(transcribeBtn);
   });
 });
