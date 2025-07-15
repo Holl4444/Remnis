@@ -99,8 +99,17 @@ Next big addition will be the database.
 
 #### Screenshots
 
-<img width="385" height="454" alt="image" src="https://github.com/user-attachments/assets/01c1c435-182a-4625-bb0b-eb21854fcaeb" />
+<p>
+<img width="289" height="341" alt="image" src="https://github.com/user-attachments/assets/db8e8e1c-2c75-46f2-96e9-e18b73a90e0c" />
+<img width="530" height="341" alt="image" src="https://github.com/user-attachments/assets/6870898c-24ad-4566-9a12-5f9b2881c359" />
+</p>
+<p>
+<img width="530" height="341" alt="image" src="https://github.com/user-attachments/assets/13011698-b2e6-4c9a-a882-4050f22ed8f4" />
+<img width="289" height="341" alt="image" src="https://github.com/user-attachments/assets/d1e36139-b1cf-41f8-8b46-0904a11b792e" />
 
-<img width="385" height="454" alt="image" src="https://github.com/user-attachments/assets/e67a49a2-2107-41a5-98ef-26b6a1047799" />
+</p>
+
+
+
 
 
