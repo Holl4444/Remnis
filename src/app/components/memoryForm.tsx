@@ -38,6 +38,7 @@ export default function MemForm() {
   // Hide (fade out) the 'Memory Saved' message
   useEffect(() => {
     if (state && !isPending) {
+      setTextAreaState('');
       setMessageClass('');
       setTimeout(() => setMessageClass('hidden'), 3000);
     }

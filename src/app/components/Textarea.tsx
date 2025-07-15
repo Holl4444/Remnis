@@ -14,6 +14,7 @@ export default function ResizableTextarea({
     }
     if (props.onInput) props.onInput(e);
   }
+
   return (
     <textarea
       ref={textareaRef}
