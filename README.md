@@ -38,6 +38,7 @@ For development you will also need to create an .env.local folder in the root of
 - Audio Recording
 - Safe audiofile transcription
 - PWA
+- Unit testing
 
 ### Image Credits
 Photo by [Łukasz Łada@Unsplash](https://unsplash.com/@lukaszlada?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash)
