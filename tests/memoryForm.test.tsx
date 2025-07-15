@@ -58,9 +58,6 @@ describe('MemForm testing', () => {
 
   it('should clear the text area on form submission', async () => {
     render(<MemForm />);
-    // Text area should have input
-    // Submit button should be enabled
-    // When submit button clicked responds with 'Memory Saved'
 
     const textArea = screen.getByTestId(
       'text-area'
