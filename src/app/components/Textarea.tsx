@@ -21,6 +21,7 @@ export default function ResizableTextarea({
       onInput={handleInput}
           className={styles.textarea}
       {...props}
+      data-testid="text-area"
     />
   );
 }

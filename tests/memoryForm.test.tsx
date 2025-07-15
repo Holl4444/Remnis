@@ -1,7 +1,7 @@
 import React from 'react';
 import MemForm from '../src/app/components/memoryForm';
 import { it, expect, describe, vi } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { getByPlaceholderText, getByTestId, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 // Mock AudioRecorder to render a button
@@ -56,14 +56,45 @@ describe('MemForm testing', () => {
     expect(screen.queryByText('Add a memory to bank :)')).toBeFalsy();
   });
 
+  it('should clear the text area on form submission', async () => {
+    render(<MemForm />);
+    // Text area should have input
+    // Submit button should be enabled
+    // When submit button clicked responds with 'Memory Saved'
+
+    const textArea = screen.getByTestId(
+      'text-area'
+    ) as HTMLTextAreaElement;
+    await userEvent.type(textArea, 'Test string');
+    expect(textArea.value.trim().length).toBeGreaterThan(0);
+
+    const subBtn = screen.getByRole('button', { name: /Save memory/i });
+
+    await userEvent.click(subBtn);
+
+    const msgEl = screen.getByTestId('msgEl');
+    expect(msgEl.textContent).toContain('Memory Saved');
+
+    // Without the timeout will keep checking (to config or default (5s) spec)
+    await waitFor(
+      () => {  
+        expect(textArea.value).toBe(''); 
+      }
+    );    
+
+    
+
+  })
+
   it('should display an error on transcription error ', async () => {
     render(<MemForm />);
     // Set up the error triggering button at top and gave it 'Mocked Error!'
     const triggerErrorBtn = screen.getByText('Trigger error');
+    const msgEl = screen.getByTestId('msgEl');
 
     await userEvent.click(triggerErrorBtn);
 
-    const msgEl = screen.getByTestId('msgEl');
+    
     expect(msgEl.textContent?.trim().length).toBeGreaterThan(0);
     expect(msgEl.textContent).toContain('Mocked error!');
 
