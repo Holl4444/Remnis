@@ -1,4 +1,3 @@
-import React from 'react';
 import MemForm from '../src/app/components/memoryForm';
 import { it, expect, describe, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
@@ -25,7 +24,7 @@ describe('MemForm testing', () => {
     expect(subBtn).toBeTruthy();
     expect(textArea).toBeTruthy();
   });
-  
+
 
   it('should submit text-area input', async () => {
     render(<MemForm />);
