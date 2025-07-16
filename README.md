@@ -109,6 +109,12 @@ Next big addition will be the database.
 
 <img width="770" height="955" alt="image" src="https://github.com/user-attachments/assets/247330a5-8201-40f6-855b-ec65ad16ff27" />
 
+<img width="1848" height="829" alt="image" src="https://github.com/user-attachments/assets/09a433ef-2fcd-409b-92e8-cc561807d854" />
+
+
+<img width="1261" height="806" alt="image" src="https://github.com/user-attachments/assets/f90b9f06-f526-4d12-a055-164521d13c10" />
+
+
 
 
 
