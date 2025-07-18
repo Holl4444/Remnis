@@ -65,6 +65,11 @@ export default function MemForm() {
     return () => clearTimeout(msgId);
   }, [state, isPending, transcriptionError, audioStatusMsg]);
 
+  function confirmDelete() {
+
+    // Add memeory deletion confirmation and action.
+  }
+
   return (
     <form action={formAction} className={styles.memForm}>
       <section className={styles.memFormInputs}>
@@ -131,18 +136,28 @@ export default function MemForm() {
         </p>
         <ResizableTextarea
           value={textareaState}
-          onChange={(e) => setTextAreaState( e.target.value )}
+          onChange={(e) => setTextAreaState(e.target.value)}
           id="text-area"
           name="text-area"
           placeholder="Share your memory or click to edit here..."
         />
-        <button
-          type="submit"
-          className={`${styles.memFormBtn} ${styles.button}`}
-          disabled={isPending || textareaState === ''}
-        >
-          {isPending ? 'Saving memory' : 'Save memory'}
-        </button>
+        <div className={styles.formBtnWrap}>
+          <button
+            type="submit"
+            className={`${styles.memFormBtn} ${styles.button}`}
+            disabled={isPending || textareaState === ''}
+          >
+            {isPending ? 'Saving memory' : 'Save memory'}
+          </button>
+          <button
+            type="button"
+            onClick={confirmDelete}
+            className={`${styles.memFormBtn} ${styles.button}`}
+            disabled={isPending || textareaState === ''}
+          >
+            {isPending ? 'Deleting memory' : 'Delete Memory'}
+          </button>
+        </div>
       </div>
     </form>
   );

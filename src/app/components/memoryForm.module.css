@@ -74,6 +74,10 @@
   transition: opacity 0.7s ease-in-out;
 }
 
+.formBtnWrap {
+  width: 100%;
+}
+
 .hidden {
   opacity: 0;
   transition: opacity 0.7s ease-in-out;
@@ -102,6 +106,17 @@
 
   .input {
     padding: 0.75em;
+  }
+
+  .formBtnWrap {
+    width: 62%;
+    display: flex;
+    justify-content: space-evenly;
+    column-gap: 1em;
+  }
+
+  .memFormBtn {
+    width: 50%;
   }
 
   .textarea {
