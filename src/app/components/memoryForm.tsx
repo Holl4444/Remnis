@@ -130,7 +130,7 @@ export default function MemForm() {
         </p>
         <ResizableTextarea
           value={textareaState}
-          onChange={(e) => setTextAreaState(e.target.value)}
+          onChange={(e) => setTextAreaState( e.target.value )}
           id="text-area"
           name="text-area"
           placeholder="Share your memory or click to edit here..."

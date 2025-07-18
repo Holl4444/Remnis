@@ -38,6 +38,7 @@ export default function AudioRecorder({
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const transcribeBtnRef = useRef<HTMLButtonElement>(null);
 
+  // Focus the Transcribe button after recording
   useEffect(() => {
     if (audioState === 'playing' && transcribeBtnRef.current) {
       transcribeBtnRef.current.focus();
@@ -164,10 +165,12 @@ export default function AudioRecorder({
       } else {
         onTranscription(result.text);
         console.log(result);
+        
       }
     } catch (err) {
       console.error(`Request could not be sent: ${err}`);
     }
+    setAudioState('default');
   }
 
   return (
@@ -182,7 +185,7 @@ export default function AudioRecorder({
           : ''}
       </div>
 
-      {audioState !== 'playing' ? (
+      {audioState !== 'playing' && audioState !== 'transcribing' ? (
         <div className={styles.recordControls}>
           <button
             onClick={handleRecordClick}
