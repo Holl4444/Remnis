@@ -113,6 +113,7 @@ export default function MemForm() {
 
       <AudioRecorder
         onTranscription={setTextAreaState}
+        currentMem={textareaState}
         onTranscriptionError={handleTransciptionError}
         onAudioStateChange={setAudioStatusMsg}
       />

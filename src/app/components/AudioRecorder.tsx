@@ -18,10 +18,12 @@ declare global {
 
 export default function AudioRecorder({
   onTranscription,
+  currentMem,
   onTranscriptionError,
   onAudioStateChange,
 }: {
-  onTranscription: (text: string) => void;
+    onTranscription: (text: string) => void;
+    currentMem: string;
   onTranscriptionError: (errorMessage: string) => void;
   onAudioStateChange: (state: string) => void;
 }) {
@@ -163,7 +165,8 @@ export default function AudioRecorder({
         if (onTranscriptionError)
           onTranscriptionError(result.errorMessage);
       } else {
-        onTranscription(result.text);
+        onTranscription(`${currentMem}
+          ${result.text}`);
         console.log(result);
         
       }
