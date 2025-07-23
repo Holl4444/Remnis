@@ -165,8 +165,7 @@ export default function AudioRecorder({
         if (onTranscriptionError)
           onTranscriptionError(result.errorMessage);
       } else {
-        onTranscription(`${currentMem}
-          ${result.text}`);
+        onTranscription(`${currentMem}\n\n${result.text}`);
         console.log(result);
         
       }

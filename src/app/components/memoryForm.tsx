@@ -1,6 +1,5 @@
 'use client';
 import { useActionState, useState, useEffect } from 'react';
-// import { useScrollHeight } from '../hooks/useScrollHeight';
 import AudioRecorder from './AudioRecorder';
 import ResizableTextarea from './Textarea';
 import styles from './memoryForm.module.css';
@@ -67,7 +66,7 @@ export default function MemForm() {
 
   function confirmDelete() {
 
-    // Add memeory deletion confirmation and action.
+    // Add memory deletion confirmation and action.
   }
 
   return (
