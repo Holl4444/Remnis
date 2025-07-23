@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   width: 80%;
+  position: relative;
 }
 
 .label {
@@ -56,7 +57,6 @@
   margin-top: 0;
   box-shadow: 2px 3px 3px #6a7c92, 2px 3px 4px #bdcada,
     2px 3px 5px #d1dae6;
-
 }
 
 .submitWrap {
@@ -78,9 +78,33 @@
   width: 100%;
 }
 
+.popup {
+  position: absolute;
+  background-color: #fff;
+  border: 2px solid #191944;
+  width: 80%;
+  height: 61%;
+  margin: 0 auto;
+  padding-top: 1em;
+  left: 50%;
+  top: 68%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 1em;
+  filter: drop-shadow(2px 4px 3px #828a95);
+}
+
+.popupTitle {
+  font-size: 2.3rem;
+}
+
 .hidden {
   opacity: 0;
   transition: opacity 0.7s ease-in-out;
+  /* Important: prevents hidden popup blocking form */
+  pointer-events: none;
 }
 
 @media (min-width: 1024px) {
@@ -129,4 +153,9 @@
     margin-top: 1em;
     padding: 1.5em;
   }
+
+  .popup {
+    width: 62%;
+  }
+
 }

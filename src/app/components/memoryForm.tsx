@@ -1,5 +1,5 @@
 'use client';
-import { useActionState, useState, useEffect } from 'react';
+import { useActionState, useState, useEffect, useRef } from 'react';
 import AudioRecorder from './AudioRecorder';
 import ResizableTextarea from './Textarea';
 import styles from './memoryForm.module.css';
@@ -36,6 +36,9 @@ export default function MemForm() {
   // Audiostate handles UI for isRecording / not recording / blobhandling / playing audio
   const [audioStatusMsg, setAudioStatusMsg] = useState<string>('');
 
+  const audioRecorderRef = useRef<{ deleteTrack: () => void }>(null);
+  const popupRef = useRef<HTMLElement>(null);
+
   function handleTransciptionError(error: unknown) {
     setTranscriptionError(
       error instanceof Error ? error.message : String(error)
@@ -64,9 +67,27 @@ export default function MemForm() {
     return () => clearTimeout(msgId);
   }, [state, isPending, transcriptionError, audioStatusMsg]);
 
-  function confirmDelete() {
 
-    // Add memory deletion confirmation and action.
+  function deleteMemory() {
+    // Delete from db
+    audioRecorderRef.current?.deleteTrack()
+    hidePopup();
+  }
+
+
+  function confirmDelete() {
+    // Add memory deletion confirmation.
+    showPopup()
+    
+  }
+
+  function showPopup() {
+    popupRef.current?.classList.remove(styles.hidden);
+  }
+
+  function hidePopup() {
+    // Adding <HTMLButtonElement> above doesn't override generic EventTarget
+    popupRef.current?.classList.add(styles.hidden);
   }
 
   return (
@@ -116,6 +137,7 @@ export default function MemForm() {
       </section>
 
       <AudioRecorder
+        ref={audioRecorderRef}
         onTranscription={setTextAreaState}
         currentMem={textareaState}
         onTranscriptionError={handleTransciptionError}
@@ -158,6 +180,12 @@ export default function MemForm() {
           </button>
         </div>
       </div>
+      <section ref={popupRef} className={`${styles.popup} ${styles.hidden}`}>
+        <h1 className={styles.popupTitle}>Are you sure?</h1>
+        <p>This memory will be permanantly deleted</p>
+        <button type="button" onClick={deleteMemory}>Confirm</button>
+        <button type="button" onClick={hidePopup}>Go Back</button>
+      </section>
     </form>
   );
 }
