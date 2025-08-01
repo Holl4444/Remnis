@@ -25,7 +25,6 @@ vi.mock('../src/app/components/AudioRecorder.tsx', () => ({
 
 describe('MemForm testing', () => {
   it('should render the text area and submit button', async () => {
-
     const textArea = screen.getByPlaceholderText(
       'Share your memory or click to edit here...'
     );
@@ -38,7 +37,6 @@ describe('MemForm testing', () => {
   });
 
   it('should submit text-area input', async () => {
-
     const textArea = screen.getByPlaceholderText(
       'Share your memory or click to edit here...'
     ) as HTMLTextAreaElement;
@@ -52,11 +50,12 @@ describe('MemForm testing', () => {
 
     await userEvent.click(submitBtn);
 
-    expect(screen.getByText('Memory Saved')).toBeTruthy();
+    await waitFor(() => {
+      expect(screen.getByText('Memory Saved')).toBeTruthy();
+    });
   });
 
   it('should disable the submit button when text-area is empty', async () => {
-
     submitBtn = screen.getByRole('button', {
       name: /Save memory/i,
     });
@@ -66,7 +65,6 @@ describe('MemForm testing', () => {
   });
 
   it('should clear the text area on form submission', async () => {
-
     const textArea = screen.getByTestId(
       'text-area'
     ) as HTMLTextAreaElement;
@@ -78,16 +76,20 @@ describe('MemForm testing', () => {
     await userEvent.click(submitBtn);
 
     const msgEl = screen.getByTestId('msgEl');
-    expect(msgEl.textContent).toContain('Memory Saved');
+    await waitFor(() => {
+       expect(msgEl.textContent).toContain('Memory Saved');
+    })
 
     // Without the timeout will keep checking (to config or default (5s) spec)
-    await waitFor(() => {
-      expect(textArea.value).toBe('');
-    });
+    await waitFor(
+      () => {
+        expect(textArea.value).toBe('');
+      },
+      { timeout: 5000 }
+    );
   });
 
   it('should display an error on transcription error ', async () => {
-
     // Set up the error triggering button at top and gave it 'Mocked Error!'
     const triggerErrorBtn = screen.getByText('Trigger error');
     const msgEl = screen.getByTestId('msgEl');
@@ -99,7 +101,6 @@ describe('MemForm testing', () => {
   });
 
   it('should remove messages after 3 seconds', async () => {
-
     const textArea = screen.getByPlaceholderText(
       'Share your memory or click to edit here...'
     );
@@ -111,14 +112,19 @@ describe('MemForm testing', () => {
 
     await userEvent.click(submitBtn);
 
-    expect(screen.queryByText('Memory Saved')).toBeTruthy();
+    // TypeScript happier with  this than | undefined | null due to type narrowing in async context
+    let msgEl: HTMLElement;
+    await waitFor(() => {
+      msgEl = screen.getByText('Memory Saved');
+      expect(msgEl).toBeTruthy();
+    });
+
     
-    await waitFor(
-      () => {
-        const msgEl = screen.getByText('Memory Saved');
-        expect(msgEl.className.includes('hidden')).toBe(true);
-      },
-      { timeout: 5000 }
-    );
+      await waitFor(
+        () => {
+          expect(msgEl.className.includes('hidden')).toBe(true);
+        },
+        { timeout: 5000 }
+      );
   });
 });
