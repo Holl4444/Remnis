@@ -61,7 +61,8 @@ describe('AudioRecorder component tests', () => {
   it('should switch to the audioplayer tsx when recording is completed', async () => {
     render(
       <AudioRecorder
-        onTranscription={() => {}}
+        onTranscription={() => { }}
+        currentMem=''
         onTranscriptionError={() => { }}
         onAudioStateChange={() => {}}
       />
