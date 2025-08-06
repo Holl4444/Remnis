@@ -2,16 +2,17 @@
 import { useActionState, useState, useEffect, useRef } from 'react';
 import AudioRecorder from './AudioRecorder';
 import ResizableTextarea from './Textarea';
+
 import styles from './memoryForm.module.css';
 
-interface Memory {
+export interface Memory {
   title?: string;
   year?: string;
-  who?: string;
+  tagged?: string;
   'text-area'?: string;
 }
 
-const updateDB = (
+const updateDB = async (
   _prevMem: Memory | { issue: string } | null,
   formData: FormData
 ) => {
@@ -22,7 +23,20 @@ const updateDB = (
     return { issue: `Add a memory to bank :)` };
   }
   console.log(memory);
-  return memory;
+
+  // Make fetch request to API
+  const response = await fetch('api/postToDb', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(memory)
+  });
+
+  if (response.ok) {
+    return memory;
+  } else {
+    return { issue: 'Failed to save memory' };
+  }
+  
 };
 
 export default function MemForm() {
@@ -67,18 +81,15 @@ export default function MemForm() {
     return () => clearTimeout(msgId);
   }, [state, isPending, transcriptionError, audioStatusMsg]);
 
-
   function deleteMemory() {
     // Delete from db
-    audioRecorderRef.current?.deleteTrack()
+    audioRecorderRef.current?.deleteTrack();
     hidePopup();
   }
 
-
   function confirmDelete() {
     // Add memory deletion confirmation.
-    showPopup()
-    
+    showPopup();
   }
 
   function showPopup() {
@@ -180,11 +191,18 @@ export default function MemForm() {
           </button>
         </div>
       </div>
-      <section ref={popupRef} className={`${styles.popup} ${styles.hidden}`}>
+      <section
+        ref={popupRef}
+        className={`${styles.popup} ${styles.hidden}`}
+      >
         <h1 className={styles.popupTitle}>Are you sure?</h1>
         <p>This memory will be permanantly deleted</p>
-        <button type="button" onClick={deleteMemory}>Confirm</button>
-        <button type="button" onClick={hidePopup}>Go Back</button>
+        <button type="button" onClick={deleteMemory}>
+          Confirm
+        </button>
+        <button type="button" onClick={hidePopup}>
+          Go Back
+        </button>
       </section>
     </form>
   );
