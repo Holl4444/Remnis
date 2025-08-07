@@ -24,6 +24,8 @@ export async function POST(request: NextRequest) {
     model: 'whisper-1',
     prompt:
       'Personal memory story with common phrases and expressions',
+    // Consistency over creativity
+    temperature: 0,
   });
   return NextResponse.json({
     success: true,
