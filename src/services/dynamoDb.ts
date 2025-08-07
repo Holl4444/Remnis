@@ -4,7 +4,7 @@
 
 
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocumentClient, PutCommand, } from "@aws-sdk/lib-dynamodb";
+import { DeleteCommand, DynamoDBDocumentClient, PutCommand, } from "@aws-sdk/lib-dynamodb";
 // GetCommand, UpdateCommand, DeleteCommand
 import { v4 as uuid } from 'uuid';
 import { Memory } from '../app/components/memoryForm';
@@ -36,6 +36,24 @@ export const createMemory = async (memForm: Memory) => {
         return { success: true, id: memId };
     } catch (err) {
         console.error(`Could not store memory: `, err);
+        throw err;
+    }
+}
+
+export const deleteMemory = async (memId: string) => {
+    try {
+        const del = new DeleteCommand({
+            TableName: process.env.TABLE_NAME,
+            Key: {
+                mem_id: memId
+            }
+        });
+
+        await docClient.send(del);
+        return { success: true, id: memId };
+
+    } catch (err) {
+        console.error(`Couldn't delete memory: `, err);
         throw err;
     }
 }

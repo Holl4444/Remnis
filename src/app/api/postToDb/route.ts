@@ -15,8 +15,8 @@ export async function POST(request: NextRequest) {
       });
       }
     
-    await createMemory(memory);
-    return NextResponse.json({ success: true });
+    const result = await createMemory(memory);
+    return NextResponse.json({ success: true, memId: result.id });
       
   } catch (err) {
     return NextResponse.json(

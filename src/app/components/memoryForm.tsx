@@ -12,38 +12,9 @@ export interface Memory {
   'text-area'?: string;
 }
 
-const updateDB = async (
-  _prevMem: Memory | { issue: string } | null,
-  formData: FormData
-) => {
-  const memory: Memory | { issue: string } | null =
-    Object.fromEntries(formData.entries());
-
-  if (!memory || memory['text-area']?.trim() === '') {
-    return { issue: `Add a memory to bank :)` };
-  }
-  console.log(memory);
-
-  // Make fetch request to API
-  const response = await fetch('api/postToDb', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(memory)
-  });
-
-  if (response.ok) {
-    return memory;
-  } else {
-    return { issue: 'Failed to save memory' };
-  }
-  
-};
-
 export default function MemForm() {
-  const [state, formAction, isPending] = useActionState(
-    updateDB,
-    null
-  );
+
+  const [currentMemId, setCurrentMemId] = useState('');
   const [messageClass, setMessageClass] = useState('');
   const [textareaState, setTextAreaState] = useState('');
   const [transcriptionError, setTranscriptionError] = useState('');
@@ -52,6 +23,40 @@ export default function MemForm() {
 
   const audioRecorderRef = useRef<{ deleteTrack: () => void }>(null);
   const popupRef = useRef<HTMLElement>(null);
+
+  const updateDB = async (
+    _prevMem: Memory | { issue: string } | null,
+    formData: FormData
+  ) => {
+    const memory: Memory | { issue: string } | null =
+      Object.fromEntries(formData.entries());
+
+    if (!memory || memory['text-area']?.trim() === '') {
+      return { issue: `Add a memory to bank :)` };
+    }
+    console.log(memory);
+
+    // Make fetch request to API
+    const response = await fetch('api/postToDb', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(memory),
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+      setCurrentMemId(responseData.memId);
+      return memory;
+    } else {
+      return { issue: 'Failed to save memory' };
+    }
+  };
+
+  // Doesn't work like useState so we can move it below updateDB
+  const [state, formAction, isPending] = useActionState(
+    updateDB,
+    null
+  );
 
   function handleTransciptionError(error: unknown) {
     setTranscriptionError(
@@ -81,10 +86,29 @@ export default function MemForm() {
     return () => clearTimeout(msgId);
   }, [state, isPending, transcriptionError, audioStatusMsg]);
 
-  function deleteMemory() {
-    // Delete from db
+  const deleteMemory = async(memId: string) => {
+    // Clear audioRecorder
     audioRecorderRef.current?.deleteTrack();
+    // Make delete request to API
+    const response = await fetch(`api/deleteMemory/${memId}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+      setCurrentMemId(responseData.memId);
+    }
+
     hidePopup();
+
+    if (response.ok) {  
+      return { success: true, message: 'Memory deleted successfully' };
+    } else {
+      return { issue: 'Failed to delete memory' };
+    }
+  
   }
 
   function confirmDelete() {
@@ -197,7 +221,7 @@ export default function MemForm() {
       >
         <h1 className={styles.popupTitle}>Are you sure?</h1>
         <p>This memory will be permanantly deleted</p>
-        <button type="button" onClick={deleteMemory}>
+        <button type="button" onClick={() => deleteMemory(currentMemId)}>
           Confirm
         </button>
         <button type="button" onClick={hidePopup}>
