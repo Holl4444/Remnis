@@ -1,3 +1,6 @@
+// Consider changing Audiostatusmsg to general messages.
+// Update delete to handle memories not yet stored on server.
+
 'use client';
 import { useActionState, useState, useEffect, useRef } from 'react';
 import AudioRecorder from './AudioRecorder';
@@ -13,9 +16,8 @@ export interface Memory {
 }
 
 export default function MemForm() {
-
   const [currentMemId, setCurrentMemId] = useState(
-    'c7147b4d-6fc7-483d-b91b-4682e5ee31ac'
+    '61350e86-dedc-413e-a93b-f1922eb9e027'
   );
   const [messageClass, setMessageClass] = useState('');
   const [textareaState, setTextAreaState] = useState('');
@@ -60,14 +62,13 @@ export default function MemForm() {
     null
   );
 
-  const deleteMemory = async(memId: string) => {
+  const deleteMemory = async (memId: string) => {
     // Clear audioRecorder
     audioRecorderRef.current?.deleteTrack();
     // Make delete request to API
     const response = await fetch(`api/deleteMemory/${memId}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
-
     });
 
     if (response.ok) {
@@ -77,13 +78,16 @@ export default function MemForm() {
 
     hidePopup();
 
-    if (response.ok) {  
-      return { success: true, message: 'Memory deleted successfully' };
+    if (response.ok) {
+      setAudioStatusMsg('Memory Deleted');
+      return {
+        success: true,
+        message: 'Memory deleted successfully',
+      };
     } else {
       return { issue: 'Failed to delete memory' };
     }
-  
-  }
+  };
 
   function confirmDelete() {
     // Add memory deletion confirmation.
@@ -99,33 +103,33 @@ export default function MemForm() {
     popupRef.current?.classList.add(styles.hidden);
   }
 
-    function handleTransciptionError(error: unknown) {
-      setTranscriptionError(
-        error instanceof Error ? error.message : String(error)
-      );
+  function handleTransciptionError(error: unknown) {
+    setTranscriptionError(
+      error instanceof Error ? error.message : String(error)
+    );
+  }
+
+  // Update UI & Hide (fade out) the messages. Clear any previous msg
+  useEffect(() => {
+    //Track which message needs cancelling if another is called
+    let msgId: ReturnType<typeof setTimeout>;
+
+    if (state && !isPending) {
+      setTextAreaState('');
+      setMessageClass('');
+      msgId = setTimeout(() => setMessageClass('hidden'), 3000);
+    } else if (transcriptionError) {
+      setMessageClass('');
+      msgId = setTimeout(() => setMessageClass('hidden'), 5000);
+    } else if (audioStatusMsg) {
+      setMessageClass('');
+      msgId = setTimeout(() => setMessageClass('hidden'), 2000);
+    } else {
+      setMessageClass('');
+      msgId = setTimeout(() => setMessageClass('hidden'), 3000);
     }
-
-    // Update UI & Hide (fade out) the messages. Clear any previous msg
-    useEffect(() => {
-      //Track which message needs cancelling if another is called
-      let msgId: ReturnType<typeof setTimeout>;
-
-      if (state && !isPending) {
-        setTextAreaState('');
-        setMessageClass('');
-        msgId = setTimeout(() => setMessageClass('hidden'), 3000);
-      } else if (transcriptionError) {
-        setMessageClass('');
-        msgId = setTimeout(() => setMessageClass('hidden'), 5000);
-      } else if (audioStatusMsg) {
-        setMessageClass('');
-        msgId = setTimeout(() => setMessageClass('hidden'), 2000);
-      } else {
-        setMessageClass('');
-        msgId = setTimeout(() => setMessageClass('hidden'), 3000);
-      }
-      return () => clearTimeout(msgId);
-    }, [state, isPending, transcriptionError, audioStatusMsg]);
+    return () => clearTimeout(msgId);
+  }, [state, isPending, transcriptionError, audioStatusMsg]);
 
   return (
     <form action={formAction} className={styles.memForm}>
@@ -225,7 +229,10 @@ export default function MemForm() {
       >
         <h1 className={styles.popupTitle}>Are you sure?</h1>
         <p>This memory will be permanantly deleted</p>
-        <button type="button" onClick={() => deleteMemory(currentMemId)}>
+        <button
+          type="button"
+          onClick={() => deleteMemory(currentMemId)}
+        >
           Confirm
         </button>
         <button type="button" onClick={hidePopup}>
