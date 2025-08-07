@@ -60,34 +60,6 @@ export default function MemForm() {
     null
   );
 
-  function handleTransciptionError(error: unknown) {
-    setTranscriptionError(
-      error instanceof Error ? error.message : String(error)
-    );
-  }
-
-  // Update UI & Hide (fade out) the messages. Clear any previous msg
-  useEffect(() => {
-    //Track which message needs cancelling if another is called
-    let msgId: ReturnType<typeof setTimeout>;
-
-    if (state && !isPending) {
-      setTextAreaState('');
-      setMessageClass('');
-      msgId = setTimeout(() => setMessageClass('hidden'), 3000);
-    } else if (transcriptionError) {
-      setMessageClass('');
-      msgId = setTimeout(() => setMessageClass('hidden'), 5000);
-    } else if (audioStatusMsg) {
-      setMessageClass('');
-      msgId = setTimeout(() => setMessageClass('hidden'), 2000);
-    } else {
-      setMessageClass('');
-      msgId = setTimeout(() => setMessageClass('hidden'), 3000);
-    }
-    return () => clearTimeout(msgId);
-  }, [state, isPending, transcriptionError, audioStatusMsg]);
-
   const deleteMemory = async(memId: string) => {
     // Clear audioRecorder
     audioRecorderRef.current?.deleteTrack();
@@ -126,6 +98,34 @@ export default function MemForm() {
     // Adding <HTMLButtonElement> above doesn't override generic EventTarget
     popupRef.current?.classList.add(styles.hidden);
   }
+
+    function handleTransciptionError(error: unknown) {
+      setTranscriptionError(
+        error instanceof Error ? error.message : String(error)
+      );
+    }
+
+    // Update UI & Hide (fade out) the messages. Clear any previous msg
+    useEffect(() => {
+      //Track which message needs cancelling if another is called
+      let msgId: ReturnType<typeof setTimeout>;
+
+      if (state && !isPending) {
+        setTextAreaState('');
+        setMessageClass('');
+        msgId = setTimeout(() => setMessageClass('hidden'), 3000);
+      } else if (transcriptionError) {
+        setMessageClass('');
+        msgId = setTimeout(() => setMessageClass('hidden'), 5000);
+      } else if (audioStatusMsg) {
+        setMessageClass('');
+        msgId = setTimeout(() => setMessageClass('hidden'), 2000);
+      } else {
+        setMessageClass('');
+        msgId = setTimeout(() => setMessageClass('hidden'), 3000);
+      }
+      return () => clearTimeout(msgId);
+    }, [state, isPending, transcriptionError, audioStatusMsg]);
 
   return (
     <form action={formAction} className={styles.memForm}>
