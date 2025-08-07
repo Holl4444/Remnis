@@ -26,7 +26,8 @@ export const createMemory = async (memForm: Memory) => {
                 mem_id: memId,
                 // Already typeguard in memoryForm.tsx
                 Text: memForm['text-area'],
-                // Split list of individuals and filter Boolean to remove empty or undefined values
+                // Set to tell Dynamo its a string set so we get clean instead of raw data.
+                // Split list of individuals and filter Boolean to remove empty or undefined values.
                 mem_tags: new Set([memForm.title, memForm.year, ...(memForm.tagged ? memForm.tagged.split(',').map(name => name.trim()): [])].filter(Boolean)) || [],
                 //user_id: (when added auth)
             }
