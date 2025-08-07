@@ -17,7 +17,7 @@ export interface Memory {
 
 export default function MemForm() {
   const [currentMemId, setCurrentMemId] = useState(
-    '61350e86-dedc-413e-a93b-f1922eb9e027'
+    ''
   );
   const [messageClass, setMessageClass] = useState('');
   const [textareaState, setTextAreaState] = useState('');
