@@ -22,6 +22,8 @@ export async function POST(request: NextRequest) {
   const transcription = await openai.audio.transcriptions.create({
     file: bufferFile,
     model: 'whisper-1',
+    prompt:
+      'Personal memory story with common phrases and expressions',
   });
   return NextResponse.json({
     success: true,
