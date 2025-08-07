@@ -14,7 +14,9 @@ export interface Memory {
 
 export default function MemForm() {
 
-  const [currentMemId, setCurrentMemId] = useState('');
+  const [currentMemId, setCurrentMemId] = useState(
+    'c7147b4d-6fc7-483d-b91b-4682e5ee31ac'
+  );
   const [messageClass, setMessageClass] = useState('');
   const [textareaState, setTextAreaState] = useState('');
   const [transcriptionError, setTranscriptionError] = useState('');
@@ -139,6 +141,8 @@ export default function MemForm() {
             name="title"
             maxLength={30}
             placeholder="Fi's first easter..."
+            // Need at least one tag to conform to dynamodb string sets also, be wary deleting
+            required
           />
         </div>
         <div className={styles.memFormInput}>
