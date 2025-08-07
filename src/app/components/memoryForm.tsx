@@ -16,9 +16,7 @@ export interface Memory {
 }
 
 export default function MemForm() {
-  const [currentMemId, setCurrentMemId] = useState(
-    ''
-  );
+  const [currentMemId, setCurrentMemId] = useState('');
   const [messageClass, setMessageClass] = useState('');
   const [textareaState, setTextAreaState] = useState('');
   const [transcriptionError, setTranscriptionError] = useState('');
@@ -68,17 +66,15 @@ export default function MemForm() {
     // Make delete request to API
     const response = await fetch(`api/deleteMemory/${memId}`, {
       method: 'DELETE',
+      // Added for safety
       headers: { 'Content-Type': 'application/json' },
     });
-
-    if (response.ok) {
-      const responseData = await response.json();
-      setCurrentMemId(responseData.memId);
-    }
 
     hidePopup();
 
     if (response.ok) {
+      const responseData = await response.json();
+      setCurrentMemId(responseData.memId);
       setAudioStatusMsg('Memory Deleted');
       return {
         success: true,
@@ -90,7 +86,6 @@ export default function MemForm() {
   };
 
   function confirmDelete() {
-    // Add memory deletion confirmation.
     showPopup();
   }
 
