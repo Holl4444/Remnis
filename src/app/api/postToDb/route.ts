@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
       {
         success: false,
         error: 500,
-        errorMessage: err,
+        errorMessage: err instanceof Error ? err.message : String(err),
       },
       { status: 500 }
     );
