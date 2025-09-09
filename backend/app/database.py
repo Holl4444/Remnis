@@ -1,0 +1,1 @@
+# Replaces dynamoDb.ts: functions to interact with AWS DynamoDB
