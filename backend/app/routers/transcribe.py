@@ -16,7 +16,7 @@ async def transcribe_recording(audioFile: UploadFile = File(...)):
         # Read the file in as bytes - FastAPI handling things
         bufferFile = await audioFile.read()
         openai = OpenAI()
-        transcription = await openai.audio.transcriptions.create(
+        transcription = openai.audio.transcriptions.create(
             #original filename: the bytes content we read: the content type (audio/webm)
             file = (audioFile.filename, bufferFile, audioFile.content_type),
             model = 'whisper-1',
@@ -29,5 +29,11 @@ async def transcribe_recording(audioFile: UploadFile = File(...)):
             'text': transcription.text,
             'memId': str(uuid4())
         }
+    except HTTPException as err:
+        raise err
     except Exception as err:
-        raise HTTPException(status_code=500, detail=str(err))
+        print("Transcribe error:", err)
+        return {
+            'success': False,
+            'errorMessage': str(err)
+        }
