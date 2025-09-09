@@ -159,7 +159,8 @@ const AudioRecorder = forwardRef(
       try {
         setAudioState('transcribing');
         const audioForm = convertAudio();
-        const response = await fetch('/api/transcribe', {
+        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+        const response = await fetch(`${apiBaseUrl}/transcribe`, {
           method: 'POST',
           body: audioForm,
         });
