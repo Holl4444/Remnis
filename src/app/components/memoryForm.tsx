@@ -19,12 +19,47 @@ export default function MemForm() {
   const [currentMemId, setCurrentMemId] = useState('');
   const [messageClass, setMessageClass] = useState('');
   const [textareaState, setTextAreaState] = useState('');
-  const [transcriptionError, setTranscriptionError] = useState('');
-  // Audiostate handles UI for isRecording / not recording / blobhandling / playing audio
-  const [audioStatusMsg, setAudioStatusMsg] = useState<string>('');
+
+  // Consolidated message state
+  const [currentMessage, setCurrentMessage] = useState<{
+    text: string;
+    type: 'success' | 'error' | 'audio' | 'transcription-error';
+  } | null>(null);
 
   const audioRecorderRef = useRef<{ deleteTrack: () => void }>(null);
   const popupRef = useRef<HTMLElement>(null);
+
+  // Helper functions to set different message types
+  const setMessage = (
+    text: string,
+    type: 'success' | 'error' | 'audio' | 'transcription-error'
+  ) => {
+    console.log('setMessage called with:', { text, type });
+    setCurrentMessage((prev) => {
+      // Prevent unnecessary updates if message is the same
+      if (prev?.text === text && prev?.type === type) {
+        console.log('Message unchanged, returning previous:', prev);
+        return prev;
+      }
+      console.log('Setting new message:', { text, type });
+      return { text, type };
+    });
+  };
+
+  const setAudioStatusMsg = (msg: string) => {
+    // Ignore empty strings and let messages timeout
+    if (msg === 'STOP_RECORDING') {
+      setCurrentMessage(null);
+    } else if (msg) {
+      setMessage(msg, 'audio');
+    }
+  };
+
+  const handleTransciptionError = (error: unknown) => {
+    const errorMsg =
+      error instanceof Error ? error.message : String(error);
+    setMessage(errorMsg, 'transcription-error');
+  };
 
   const updateDB = async (
     _prevMem: Memory | { issue: string } | null,
@@ -75,12 +110,13 @@ export default function MemForm() {
     if (response.ok) {
       const responseData = await response.json();
       setCurrentMemId(responseData.memId);
-      setAudioStatusMsg('Memory Deleted');
+      setMessage('Memory Deleted', 'success');
       return {
         success: true,
         message: 'Memory deleted successfully',
       };
     } else {
+      setMessage('Failed to delete memory', 'error');
       return { issue: 'Failed to delete memory' };
     }
   };
@@ -98,33 +134,53 @@ export default function MemForm() {
     popupRef.current?.classList.add(styles.hidden);
   }
 
-  function handleTransciptionError(error: unknown) {
-    setTranscriptionError(
-      error instanceof Error ? error.message : String(error)
-    );
-  }
-
-  // Update UI & Hide (fade out) the messages. Clear any previous msg
+  // Update UI & Hide (fade out) the messages
   useEffect(() => {
-    //Track which message needs cancelling if another is called
-    let msgId: ReturnType<typeof setTimeout>;
+    if (!currentMessage) return;
 
+    setMessageClass('');
+
+    // Set timeout based on message type
+    // Special case: "Recording..." should persist until explicitly cleared
+    if (currentMessage.text === 'Recording...') {
+      return; // Don't set any timeout for recording message
+    }
+
+    const timeoutDuration =
+      currentMessage.type === 'transcription-error'
+        ? 5000
+        : currentMessage.type === 'audio'
+        ? 2000
+        : 3000;
+
+    // Capture the message type now, before the timeout
+    const messageType = currentMessage.type;
+
+    const msgId = setTimeout(() => {
+      setMessageClass('hidden');
+      if (messageType === 'success') {
+        // Clear audio recorder after success message hides
+        audioRecorderRef.current?.deleteTrack();
+      }
+    }, timeoutDuration);
+
+    return () => clearTimeout(msgId);
+  }, [currentMessage]);
+
+  // Set success message when form completes
+  useEffect(() => {
+    console.log('Success useEffect triggered:', { state, isPending });
     if (state && !isPending) {
       setTextAreaState('');
-      setMessageClass('');
-      msgId = setTimeout(() => setMessageClass('hidden'), 3000);
-    } else if (transcriptionError) {
-      setMessageClass('');
-      msgId = setTimeout(() => setMessageClass('hidden'), 5000);
-    } else if (audioStatusMsg) {
-      setMessageClass('');
-      msgId = setTimeout(() => setMessageClass('hidden'), 2000);
-    } else {
-      setMessageClass('');
-      msgId = setTimeout(() => setMessageClass('hidden'), 3000);
+      console.log('About to set Memory Saved message');
+      if ('issue' in state) {
+        setMessage(state.issue, 'error');
+      } else {
+        setMessage('Memory Saved', 'success');
+        console.log('Just called setMessage with Memory Saved');
+      }
     }
-    return () => clearTimeout(msgId);
-  }, [state, isPending, transcriptionError, audioStatusMsg]);
+  }, [state, isPending]);
 
   return (
     <form action={formAction} className={styles.memForm}>
@@ -187,11 +243,7 @@ export default function MemForm() {
           className={`${styles.submitMsg} ${styles[messageClass]}`}
           data-testid="msgEl"
         >
-          {state &&
-            !isPending &&
-            ('issue' in state ? state.issue : 'Memory Saved')}
-          {transcriptionError && transcriptionError}
-          {audioStatusMsg && audioStatusMsg}
+          {currentMessage && currentMessage.text}
         </p>
         <ResizableTextarea
           value={textareaState}
@@ -214,7 +266,7 @@ export default function MemForm() {
             className={`${styles.memFormBtn} ${styles.button}`}
             disabled={isPending || textareaState === ''}
           >
-            {isPending ? 'Deleting memory' : 'Delete Memory'}
+            {isPending ? 'Deleting memory' : 'Delete memory'}
           </button>
         </div>
       </div>

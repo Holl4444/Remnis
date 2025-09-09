@@ -7,7 +7,7 @@ let submitBtn;
 
 beforeEach(() => {
   render(<MemForm />);
-  submitBtn = screen.getByRole('button', { name: /Save Memory/i });
+  submitBtn = screen.getByRole('button', { name: /Save memory/i });
 });
 
 // Mock AudioRecorder to render a button

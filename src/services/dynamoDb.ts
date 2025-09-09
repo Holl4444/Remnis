@@ -13,6 +13,7 @@ const dbClient = new DynamoDBClient({
     // dont need credentials as AWS SDK will use SSO
     region: process.env.AWS_REGION || 'us-east-1'
 });
+// Higher level wrapper for dbClient - simpler more readable code
 const docClient = DynamoDBDocumentClient.from(dbClient);
 
 //Save to database logic
@@ -32,6 +33,7 @@ export const createMemory = async (memForm: Memory) => {
                 //user_id: (when added auth)
             }
         });
+        
         await docClient.send(put);
         return { success: true, id: memId };
     } catch (err) {

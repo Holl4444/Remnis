@@ -126,6 +126,7 @@ const AudioRecorder = forwardRef(
       if (mediaRecorderRef.current) {
         mediaRecorderRef.current.stop();
       }
+      onAudioStateChange("STOP_RECORDING")
       console.log(`Recording stopped`);
     }
 
