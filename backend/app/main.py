@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from .routers import transcribe, memories
 from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI(debug=True)
+app = FastAPI(debug=False)
 load_dotenv()
 
 app.add_middleware(
