@@ -74,11 +74,23 @@ export default function MemForm() {
     console.log(memory);
 
     // Make fetch request to API
-    const response = await fetch('api/postToDb', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(memory),
-    });
+    console.log(
+      'MemoryForm: about to fetch:',
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/memories`
+    );
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/memories`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(memory),
+      }
+    );
+    console.log(
+      'MemoryForm: fetch response status:',
+      response.status
+    );
+    console.log('MemoryForm: fetch response ok:', response.ok);
 
     if (response.ok) {
       const responseData = await response.json();
@@ -99,11 +111,23 @@ export default function MemForm() {
     // Clear audioRecorder
     audioRecorderRef.current?.deleteTrack();
     // Make delete request to API
-    const response = await fetch(`api/deleteMemory/${memId}`, {
-      method: 'DELETE',
-      // Added for safety
-      headers: { 'Content-Type': 'application/json' },
-    });
+    console.log(
+      'MemoryForm: about to delete fetch:',
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/memories/${memId}`
+    );
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/memories/${memId}`,
+      {
+        method: 'DELETE',
+        // Added for safety
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
+    console.log(
+      'MemoryForm: delete response status:',
+      response.status
+    );
+    console.log('MemoryForm: delete response ok:', response.ok);
 
     hidePopup();
 

@@ -9,36 +9,40 @@ export async function POST(request: NextRequest) {
   try {
     const audioForm = await request.formData();
     // 'audiofile' named in frontend
-  const audioFile = audioForm.get('audioFile');
-  if (!audioFile || typeof audioFile === 'string') {
-    return NextResponse.json({
-      success: false,
-      error: 400,
-      errorMessage: `No audio data provided`,
-    });
-  }
-  const bufferFile = await toFile(audioFile, 'audio.webm');
-
-  const openai = new Openai();
-  const transcription = await openai.audio.transcriptions.create({
-    file: bufferFile,
-    model: 'whisper-1',
-    prompt:
-      'Personal memory story with common phrases and expressions',
-    // Consistency over creativity
-    temperature: 0,
-  });
-  return NextResponse.json({
-    success: true,
-    text: transcription.text,
-    memId: uuidv4(),
-  });
-} catch (err) {
+    const audioFile = audioForm.get('audioFile');
+    if (!audioFile || typeof audioFile === 'string') {
       return NextResponse.json({
         success: false,
+        error: 400,
+        errorMessage: `No audio data provided`,
+      });
+    }
+    const bufferFile = await toFile(audioFile, 'audio.webm');
+
+    const openai = new Openai();
+    const transcription = await openai.audio.transcriptions.create({
+      file: bufferFile,
+      model: 'whisper-1',
+      prompt:
+        'Personal memory story with common phrases and expressions',
+      // Consistency over creativity
+      temperature: 0,
+    });
+    return NextResponse.json({
+      success: true,
+      text: transcription.text,
+      memId: uuidv4(),
+    });
+  } catch (err) {
+    return NextResponse.json(
+      {
+        success: false,
         error: 500,
-        errorMessage: err instanceof Error ? err.message : 'Unknown error'
-      }, { status: 500 });
+        errorMessage:
+          err instanceof Error ? err.message : 'Unknown error',
+      },
+      { status: 500 }
+    );
   }
 }
 

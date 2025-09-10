@@ -11,16 +11,22 @@ async def test_connection():
     '''Test basic DynamoDb connection'''
     try:
         response = table.meta.client.describe_table(TableName=os.getenv('TABLE_NAME'))
-        print(f"✅ Connected to table: {response['Table']['TableName']}")
-        print(f"📊 Table status: {response['Table']['TableStatus']}")
+        print(f"Connected to table: {response['Table']['TableName']}")
+        print(f"Table status: {response['Table']['TableStatus']}")
         return True
     except ClientError as err:
-        print(f"❌ Connection failed: {err}")
+        print(f"Connection failed: {err}")
         return False
 
 async def create_memory(memory_data: dict) -> dict:
     try:
+        print(f"AWS_REGION: {os.getenv('AWS_REGION')}")
+        print(f"TABLE_NAME: {os.getenv('TABLE_NAME')}")
+        print(f"AWS_PROFILE: {os.getenv('AWS_PROFILE')}")
+        
         mem_Id = str(uuid4())
+        print(f"Creating memory with ID: {mem_Id}")
+        
         # Process tags
         tags = []
         if memory_data.get('title'):
@@ -36,8 +42,10 @@ async def create_memory(memory_data: dict) -> dict:
             'Text': memory_data['text_area'],
             'mem_tags': tags # List instead of set (DynamoDB handles)
         }
-
+        
+        print(f"Saving item to DynamoDB: {item}")
         table.put_item(Item=item)
+        print(f"Successfully saved memory: {mem_Id}")
 
         return {'success': True, 'id': mem_Id}
     
@@ -55,6 +63,35 @@ async def create_memory(memory_data: dict) -> dict:
         print(f'Unexpected error: {error_msg}')
         return {'success': False, 'error': 500, 'errorMessage': error_msg}
     
+
+async def delete_memory(mem_id: str) -> dict:
+    try:
+        response = table.delete_item(
+            Key={'mem_id': mem_id},
+            ReturnValues='ALL_OLD'  # Returns the deleted item if it existed
+        )
+        
+        if 'Attributes' in response:
+            return {'success': True, 'id': mem_id}
+        else:
+            return {
+                'success': False,
+                'error': 404,
+                'errorMessage': 'Memory not found'
+            }
+    
+    except ClientError as err:
+        print(f'Couldn\'t delete memory: {err}')
+        return {
+            'success': False,
+            'error': 500,
+            'errorMessage': f'Database error: {str(err)}'
+        }
+    except Exception as err:
+        error_msg = f"{type(err).__name__}: An unexpected error occurred"
+        print(f'Unexpected error: {error_msg}')
+        return {'success': False, 'error': 500, 'errorMessage': error_msg}
+
 
 # aws sso login --profile (process.env.AWS_PROFILE) - log in
 # aws sts get-caller-identity --profile (PROFILE NAME) - check if need to log in again

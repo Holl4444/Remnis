@@ -6,7 +6,7 @@ import { deleteMemory } from '@/services/dynamoDb';
 export async function DELETE(
   request: NextRequest,
   context: { params: Promise<{ memId: string }> }
-){
+) {
   try {
     const { memId } = await context.params;
 

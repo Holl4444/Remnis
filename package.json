@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-  "dev:both": "concurrently \"npm run dev\" \"cd backend && ..\\backend\\.venv\\Scripts\\python -m uvicorn app.main:app --reload --port 9000\"",
+    "dev:both": "concurrently \"npm run dev\" \"cd backend && ..\\backend\\.venv\\Scripts\\python -m uvicorn app.main:app --reload --port 9000\"",
+    "dev:backend": "cd backend && .venv\\Scripts\\python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 9000",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -36,7 +37,7 @@
     "eslint-config-next": "15.3.5",
     "jsdom": "^26.1.0",
     "typescript": "^5",
-    "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^3.2.4"
+    "vite": "^6.2.0",
+    "vitest": "^3.0.5"
   }
 }
