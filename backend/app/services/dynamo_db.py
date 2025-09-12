@@ -39,7 +39,7 @@ async def create_memory(memory_data: dict) -> dict:
 
         item = {
             'mem_id': mem_Id,
-            'text': memory_data['text_area'],  # Changed from 'Text' to 'text'
+            'text': memory_data['text_area'],
             'mem_tags': tags # List instead of set (DynamoDB handles)
         }
         
@@ -68,7 +68,7 @@ async def delete_memory(mem_id: str) -> dict:
     try:
         response = table.delete_item(
             Key={'mem_id': mem_id},
-            ReturnValues='ALL_OLD'  # Returns the deleted item if it existed
+            ReturnValues='ALL_OLD'  # Returns the deleted item if it existed - configuration parameter
         )
         
         if 'Attributes' in response:
@@ -92,6 +92,33 @@ async def delete_memory(mem_id: str) -> dict:
         print(f'Unexpected error: {error_msg}')
         return {'success': False, 'error': 500, 'errorMessage': error_msg}
 
+# Need to 'paginate' later    
+async def get_memories() -> dict:
+    try:
+        response = table.scan()
+        memories = response.get('Items', []) # (response['Items'] with safe return of empty list if key missing) Converted from DynamoDb format to list of python dicts by boto3
+
+        # Validate response structure
+        if not isinstance(memories, list):
+            return {'success': False, 'error': 500, 'errorMessage': 'Invalid response format'}
+        
+        return  {'success': True,
+                 'memories': memories, 
+                 'count': len(memories)}
+    
+    except ClientError as err: # AWS / DynamoDb errors
+        error_message = err.response['Error']['Message']
+        error_msg = f'Database error: {error_message}'
+        print(f'Couldn\'t retrieve memories: {error_msg}')
+        return {
+            'success': False,
+            'error': 500,
+            'errorMessage': f'Database error: { str(err) }'
+        }
+    except Exception as err:
+        error_msg = str(err) or f'{type(err).__name__}'
+        print(f'Unexpected error: {error_msg}')
+        return {'success': False, 'error': 500, 'errorMessage': error_msg}
 
 # aws sso login --profile (process.env.AWS_PROFILE) - log in
 # aws sts get-caller-identity --profile (PROFILE NAME) - check if need to log in again

@@ -2,7 +2,7 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field # Models are similar to TypeScipt interfaces
 from typing import Optional, Union # For optional fields in the data model
-from ..services.dynamo_db import create_memory, delete_memory
+from ..services.dynamo_db import create_memory, delete_memory, get_memories
 
 router = APIRouter()
 
@@ -27,8 +27,19 @@ class MemoryErrorResponse(BaseModel):
 
 MemoryResponse = Union[MemorySuccessResponse, MemoryErrorResponse]
 
-class MemoryData(BaseModel):
-    mem_id: strtext_are
+class MemoryDataSuccess(BaseModel):
+    mem_id: str
+    text: str
+    mem_tags: list[str]
+    class Config:
+        allow_population_by_field_name = True
+
+class GetMemoriesSuccessResponse(BaseModel):
+    success: bool
+    memories: list[MemoryDataSuccess]
+    count: int
+
+GetMemoriesResponse = Union[GetMemoriesSuccessResponse, MemoryErrorResponse]
 
 # Endpoint
 @router.post('/memories', response_model=MemoryResponse)
@@ -65,9 +76,9 @@ async def delete_memory_endpoint(mem_id: str):
         else:
             print(f"Delete failed: {result}")
             return MemoryErrorResponse(
-                success=False,
-                error=result.get('error', 404),
-                errorMessage=result.get('errorMessage', 'Memory not found')
+                success = False,
+                error = result.get('error', 404),
+                errorMessage = result.get('errorMessage', 'Memory not found')
             )
     except HTTPException:
         raise
@@ -75,9 +86,33 @@ async def delete_memory_endpoint(mem_id: str):
         print(f"Exception: {err}")
         error_msg = f'{type(err).__name__}: An unexpected error occurred'
         return MemoryErrorResponse(
-            success=False,
-            error=500,
-            errorMessage=error_msg
+            success = False,
+            error = 500,
+            errorMessage = error_msg
         )
     
-    @router.get(f'/memories', response_model=)
+@router.get('/memories', response_model=GetMemoriesResponse)
+async def get_all_memories_endpoint():
+    try:
+        memories_data = await get_memories()
+
+        if memories_data['success']:
+            return GetMemoriesSuccessResponse(
+                success = True,
+                memories = memories_data['memories'],
+                count = memories_data['count']
+        )
+        else:
+            return MemoryErrorResponse(
+                success = False,  
+                error = memories_data.get('error', 500),
+                errorMessage = memories_data.get('errorMessage', 'Service error')
+            )
+    except Exception as err:
+        print(f"Exception: {err}")
+        error_msg = str(err) or f'{type(err).__name__}: An unexpected error occurred'
+        return MemoryErrorResponse(
+            success = False,
+            error = 500,
+            errorMessage = error_msg
+        )
