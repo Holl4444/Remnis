@@ -1,0 +1,22 @@
+
+
+.content {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ccd7e4;
+    color:#0c0822
+}
+
+.memoriesTitle {
+    margin-bottom: 1em;
+}
+
+.memCardUl {
+    list-style-type: none;
+    margin: 0 2em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

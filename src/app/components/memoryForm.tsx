@@ -5,7 +5,7 @@
 import { useActionState, useState, useEffect, useRef } from 'react';
 import AudioRecorder from './AudioRecorder';
 import ResizableTextarea from './Textarea';
-
+import Link from 'next/link';
 import styles from './memoryForm.module.css';
 
 export interface Memory {
@@ -151,7 +151,7 @@ export default function MemForm() {
     // Textarea is a controlled input
     setTextAreaState('');
     audioRecorderRef.current?.deleteTrack();
-    setCurrentMessage({ text: 'Memory cleared', type: 'success'})
+    setCurrentMessage({ text: 'Memory cleared', type: 'success' });
   }
 
   function confirmDelete() {
@@ -217,7 +217,11 @@ export default function MemForm() {
   }, [state, isPending]);
 
   return (
-    <form ref={formRef} action={formAction} className={styles.memForm}>
+    <form
+      ref={formRef}
+      action={formAction}
+      className={styles.memForm}
+    >
       <section className={styles.memFormInputs}>
         <div className={styles.memFormInput}>
           <label htmlFor="title" className={styles.label}>
@@ -300,12 +304,25 @@ export default function MemForm() {
             className={`${styles.memFormBtn} ${styles.button}`}
             disabled={isPending || textareaState === ''}
           >
-            {isPending ?
-              !currentMemId  ? 'Clearing' : 'Deleting memory'
-              : !currentMemId ? 'Clear Memory' : 'Delete memory'}  
+            {isPending
+              ? !currentMemId
+                ? 'Clearing'
+                : 'Deleting memory'
+              : !currentMemId
+              ? 'Clear Memory'
+              : 'Delete memory'}
           </button>
         </div>
       </div>
+      <Link href="/memories" className={styles.memoriesLink}>
+        <button
+          type="button"
+          className={`${styles.button} ${styles.memoryPageBtn}`}
+        >
+          Load Memories
+        </button>
+      </Link>
+
       <section
         ref={popupRef}
         className={`${styles.popup} ${styles.hidden}`}

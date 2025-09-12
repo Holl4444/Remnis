@@ -1,0 +1,23 @@
+.li {
+    padding: 0.75em 1.3em;
+    margin-bottom: 1.5em;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #fff;
+    border: 2px solid #e47b6f;
+    border-radius: 0.2em;
+    filter: drop-shadow(1px 2px 3px #6d7279)
+
+}
+
+.cardTitle, .cardText {
+    margin-bottom: 0.5em;
+}
+
+.cardText {
+    font-size: 1rem;
+}
+
+.tags {
+    font-size: 0.9rem;
+}

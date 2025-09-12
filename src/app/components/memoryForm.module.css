@@ -78,6 +78,17 @@
   width: 100%;
 }
 
+.memoryPageBtn {
+  width: 100%;
+  display: block;
+  margin: 0 auto;
+  background-color: #e47b6f;
+  color: #fff;
+}
+.memoriesLink {
+  text-decoration: none;
+}
+
 .popup {
   position: absolute;
   background-color: #fff;
@@ -143,6 +154,10 @@
     width: 50%;
   }
 
+  .memoryPageBtn {
+    width: 62%;
+  }
+
   .textarea {
     min-height: 32vh;
     margin-bottom: 0.5em;
@@ -157,5 +172,4 @@
   .popup {
     width: 62%;
   }
-
 }

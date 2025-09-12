@@ -102,9 +102,19 @@ async def get_memories() -> dict:
         if not isinstance(memories, list):
             return {'success': False, 'error': 500, 'errorMessage': 'Invalid response format'}
         
+        transformed_memories = []
+        for item in memories:
+            transformed_memories.append(
+                {
+                    'memId': item['mem_id'],
+                    'text': item['text'],
+                    'memTags': item['mem_tags']
+                }
+            )
+        
         return  {'success': True,
-                 'memories': memories, 
-                 'count': len(memories)}
+                 'memories': transformed_memories, 
+                 'count': len(transformed_memories)}
     
     except ClientError as err: # AWS / DynamoDb errors
         error_message = err.response['Error']['Message']

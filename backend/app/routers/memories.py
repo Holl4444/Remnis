@@ -28,11 +28,12 @@ class MemoryErrorResponse(BaseModel):
 MemoryResponse = Union[MemorySuccessResponse, MemoryErrorResponse]
 
 class MemoryDataSuccess(BaseModel):
-    mem_id: str
+    memId: str 
     text: str
-    mem_tags: list[str]
+    memTags: list[str]
     class Config:
-        allow_population_by_field_name = True
+        validate_by_name = True
+        by_alias = True # input uses aliases (mem_id), sends to frontend as camelCase
 
 class GetMemoriesSuccessResponse(BaseModel):
     success: bool
