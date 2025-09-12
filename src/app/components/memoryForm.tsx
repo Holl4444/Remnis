@@ -28,6 +28,7 @@ export default function MemForm() {
 
   const audioRecorderRef = useRef<{ deleteTrack: () => void }>(null);
   const popupRef = useRef<HTMLElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   // Helper functions to set different message types
   const setMessage = (
@@ -93,8 +94,8 @@ export default function MemForm() {
     console.log('MemoryForm: fetch response ok:', response.ok);
 
     if (response.ok) {
-      const responseData = await response.json();
-      setCurrentMemId(responseData.memId);
+      await response.json(); // Consume response body
+      // Don't set currentMemId here - we'll clear it in useEffect to prepare for next memory
       return memory;
     } else {
       return { issue: 'Failed to save memory' };
@@ -132,8 +133,8 @@ export default function MemForm() {
     hidePopup();
 
     if (response.ok) {
-      const responseData = await response.json();
-      setCurrentMemId(responseData.memId);
+      await response.json(); // Consume response body
+      setCurrentMemId(''); // Clear the ID after successful deletion
       setMessage('Memory Deleted', 'success');
       return {
         success: true,
@@ -144,6 +145,14 @@ export default function MemForm() {
       return { issue: 'Failed to delete memory' };
     }
   };
+
+  function clearMemory() {
+    formRef.current?.reset();
+    // Textarea is a controlled input
+    setTextAreaState('');
+    audioRecorderRef.current?.deleteTrack();
+    setCurrentMessage({ text: 'Memory cleared', type: 'success'})
+  }
 
   function confirmDelete() {
     showPopup();
@@ -196,6 +205,7 @@ export default function MemForm() {
     console.log('Success useEffect triggered:', { state, isPending });
     if (state && !isPending) {
       setTextAreaState('');
+      setCurrentMemId(''); // Clear the ID after successful save to prepare for next memory
       console.log('About to set Memory Saved message');
       if ('issue' in state) {
         setMessage(state.issue, 'error');
@@ -207,7 +217,7 @@ export default function MemForm() {
   }, [state, isPending]);
 
   return (
-    <form action={formAction} className={styles.memForm}>
+    <form ref={formRef} action={formAction} className={styles.memForm}>
       <section className={styles.memFormInputs}>
         <div className={styles.memFormInput}>
           <label htmlFor="title" className={styles.label}>
@@ -286,11 +296,13 @@ export default function MemForm() {
           </button>
           <button
             type="button"
-            onClick={confirmDelete}
+            onClick={!currentMemId ? clearMemory : confirmDelete}
             className={`${styles.memFormBtn} ${styles.button}`}
             disabled={isPending || textareaState === ''}
           >
-            {isPending ? 'Deleting memory' : 'Delete memory'}
+            {isPending ?
+              !currentMemId  ? 'Clearing' : 'Deleting memory'
+              : !currentMemId ? 'Clear Memory' : 'Delete memory'}  
           </button>
         </div>
       </div>
