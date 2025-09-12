@@ -39,7 +39,7 @@ async def create_memory(memory_data: dict) -> dict:
 
         item = {
             'mem_id': mem_Id,
-            'Text': memory_data['text_area'],
+            'text': memory_data['text_area'],  # Changed from 'Text' to 'text'
             'mem_tags': tags # List instead of set (DynamoDB handles)
         }
         

@@ -11,7 +11,8 @@ class MemoryRequest(BaseModel):
     title: Optional[str] = None
     year: Optional[str] = None
     tagged: Optional[str] = None
-    text_area: Optional[str] = Field(alias='text-area') # js -> python
+    text_area: Optional[str] = Field(alias='text-area') # js -> python updates primary field name
+    # enables accepting field names in snake, camel and JSON cases
     class Config:
         validate_by_name = True
 
@@ -25,6 +26,9 @@ class MemoryErrorResponse(BaseModel):
     errorMessage: str
 
 MemoryResponse = Union[MemorySuccessResponse, MemoryErrorResponse]
+
+class MemoryData(BaseModel):
+    mem_id: strtext_are
 
 # Endpoint
 @router.post('/memories', response_model=MemoryResponse)
@@ -75,3 +79,5 @@ async def delete_memory_endpoint(mem_id: str):
             error=500,
             errorMessage=error_msg
         )
+    
+    @router.get(f'/memories', response_model=)
