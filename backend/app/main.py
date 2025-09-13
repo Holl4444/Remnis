@@ -8,6 +8,9 @@ load_dotenv(os.path.join(os.path.dirname(__file__), '..', '..', '.env.local'))
 from .routers import transcribe, memories
 from fastapi.middleware.cors import CORSMiddleware
 
+## NEXT UP: 
+#    Add search:  GET by id, GET by tag, DELETE incorporating id
+
 
 app = FastAPI(debug=False)
 
